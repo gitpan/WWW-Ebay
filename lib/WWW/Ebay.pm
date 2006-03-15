@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Ebay.pm,v 1.12 2006/02/18 19:29:36 Daddy Exp $ ' ;
+# $rcs = ' $Id: Ebay.pm,v 1.13 2006/03/15 01:12:03 Daddy Exp $ ' ;
 
 =head1 NAME
 
@@ -35,7 +35,7 @@ Martin Thurn
 package WWW::Ebay;
 
 my
-$VERSION = '0.076';
+$VERSION = '0.077';
 
 1;
 

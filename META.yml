@@ -1,5 +1,5 @@
 abstract: Search and manage eBay auctions
-author: Martin Thurn <mthurn@cpan.org>
+author: 'Martin Thurn <mthurn@cpan.org>'
 build_requires:
   Bit::Vector: 0
   Data::Dumper: 0
@@ -9,7 +9,7 @@ build_requires:
   Test::More: 0
   WWW::Search::Test: 2.265
 distribution_type: module
-generated_by: Module::Install version 0.52
+generated_by: Module::Install version 0.60
 license: perl
 name: WWW-Ebay
 no_index:
@@ -39,4 +39,4 @@ requires:
   URI: 0
   WWW::Search: 2.525
   WWW::Search::Ebay: 2.18
-version: 0.076
+version: 0.077

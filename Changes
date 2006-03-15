@@ -1,3 +1,11 @@
+2006-03-14    <Daddy@C-3PO>
+
+	* lib/WWW/Ebay/Session.pm (watchlist_auctions): new method
+
+2006-03-13    <Daddy@C-3PO>
+
+	* lib/WWW/Ebay/Session.pm (clear_errors): new method
+
 2006-02-19    <Daddy@C-3PO>
 
 	* lib/WWW/Ebay/Session.pm (fetch_any_ebay_page): fix Mature-login page ID

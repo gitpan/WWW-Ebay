@@ -1,5 +1,5 @@
 
-# $Id: Makefile.PL,v 1.22 2006/02/20 01:43:14 Daddy Exp $
+# $Id: Makefile.PL,v 1.23 2006/03/15 01:12:51 Daddy Exp $
 
 use inc::Module::Install;
 use strict;
@@ -66,7 +66,7 @@ sub MY::postamble
   {
   my $ret = <<'PART0';
 coverage :
-	$(RM_RF) cover_db
+	cover -delete
 	$(MAKE) HARNESS_PERL_SWITCHES=-MDevel::Cover coverage_slave
 coverage_slave : test
 	cover

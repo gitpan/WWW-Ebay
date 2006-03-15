@@ -24,5 +24,6 @@ t/gui.t
 t/listing.t
 t/session.t
 t/status.t
+t/watchlist.t
 t/WWW-Search-Ebay-Completed.t
 t/WWW-Search-Ebay-Mature.t
