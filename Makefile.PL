@@ -1,5 +1,5 @@
 
-# $Id: Makefile.PL,v 1.23 2006/03/15 01:12:51 Daddy Exp $
+# $Id: Makefile.PL,v 1.24 2006/03/19 03:56:14 Daddy Exp $
 
 use inc::Module::Install;
 use strict;
@@ -39,9 +39,10 @@ recommends('Tk' => 800);
 requires('URI' => 0);
 # We need the version that defines _load_env_useragent:
 requires('WWW::Search' => 2.525);
-# We need the version that was modified to be able to parse completed
-# auction search results:
-requires('WWW::Search::Ebay' => 2.180);
+# We need the version that has the shipping() method:
+requires('WWW::SearchResult' => 2.070);
+# We need the version whose parse_enddate() takes a string as arg2:
+requires('WWW::Search::Ebay' => 2.181);
 # We need the version of WWW::Search::Test that exports its tm_
 # functions:
 build_requires('WWW::Search::Test' => 2.265);

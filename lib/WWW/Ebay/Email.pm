@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Email.pm,v 1.20 2005/01/24 05:00:24 Daddy Exp $ ' ;
+# $rcs = ' $Id: Email.pm,v 1.21 2006/03/19 03:53:40 Daddy Exp $ ' ;
 
 =head1 COPYRIGHT
 
@@ -12,15 +12,8 @@ WWW/Ebay/Email.pm
 
 =head1 SYNOPSIS
 
-=begin example
-
   use WWW::Ebay::Email;
   my $oMsg = new WWW::Ebay::Email;
-
-=end example
-
-=for example_testing
-ok(ref $oMsg);
 
 =head1 DESCRIPTION
 
@@ -53,7 +46,7 @@ use Email::Simple;
 use strict;
 
 use vars qw( $AUTOLOAD $VERSION );
-$VERSION = sprintf("%d.%02d", q$Revision: 1.20 $ =~ /(\d+)\.(\d+)/o);
+$VERSION = sprintf("%d.%02d", q$Revision: 1.21 $ =~ /(\d+)\.(\d+)/o);
 
 use constant DEBUG_SMTP => 1;
 
