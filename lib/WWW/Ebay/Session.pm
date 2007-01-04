@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Session.pm,v 1.49 2006/03/15 00:55:48 Daddy Exp $ ' ;
+# $rcs = ' $Id: Session.pm,v 1.51 2007/01/04 00:58:18 Daddy Exp $ ' ;
 
 =head1 COPYRIGHT
 
@@ -22,7 +22,7 @@ webpages from the eBay auction website (www.ebay.com).
 
 =head1 AUTHOR
 
-Martin Thurn
+Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.html>.
 
 =head1 METHODS
 
@@ -36,7 +36,6 @@ require 5.006;
 
 use Data::Dumper;  # for debugging only
 use Date::Manip;
-use File::HomeDir;
 use File::Spec::Functions;
 use HTML::Form;
 use HTML::TreeBuilder;

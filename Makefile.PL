@@ -1,5 +1,5 @@
 
-# $Id: Makefile.PL,v 1.24 2006/03/19 03:56:14 Daddy Exp $
+# $Id: Makefile.PL,v 1.25 2006/05/19 11:57:32 Daddy Exp $
 
 use inc::Module::Install;
 use strict;
@@ -22,7 +22,6 @@ recommends('Email::Send' => 0);
 recommends('Email::Send::Env' => 0);
 recommends('Email::Simple' => 0);
 requires('File::Glob' => 0);
-requires('File::HomeDir' => 0);
 requires('File::Spec' => 0);
 requires('HTML::Form' => 0);
 requires('HTML::Parser' => 3);

@@ -1,5 +1,5 @@
 
-# $Id: Mature.pm,v 1.9 2006/02/23 02:22:56 Daddy Exp $
+# $Id: Mature.pm,v 1.11 2007/01/04 01:00:03 Daddy Exp $
 
 =head1 NAME
 
@@ -53,11 +53,7 @@ Please tell the author if you find any!
 
 =head1 AUTHOR
 
-C<WWW::Search::Ebay::Mature> was written by Martin Thurn
-<C<mthurn@cpan.org>>.
-
-C<WWW::Search::Ebay::Mature> is maintained by Martin Thurn
-<C<mthurn@cpan.org>.
+Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.html>.
 
 =head1 LEGALESE
 
@@ -82,7 +78,7 @@ use vars qw( @ISA $VERSION $MAINTAINER );
 use constant DEBUG_FUNC => 0;
 @ISA = qw( WWW::Search::Ebay );
 
-$VERSION = sprintf("%d.%02d", q$Revision: 1.9 $ =~ /(\d+)\.(\d+)/o);
+$VERSION = sprintf("%d.%02d", q$Revision: 1.11 $ =~ /(\d+)\.(\d+)/o);
 $MAINTAINER = 'Martin Thurn <mthurn@cpan.org>';
 
 sub login
@@ -117,7 +113,6 @@ sub native_setup_search
   {
   my ($self, $native_query, $rhOptsArg) = @_;
   DEBUG_FUNC && print STDERR " + Ebay::Mature::native_setup_search()\n";
-  $rhOptsArg ||= [];
   # $rhOptsArg->{'MfcISAPICommand'} = 'GetResult';
   $rhOptsArg->{'categoryid'} = '';
   # $rhOptsArg->{'ht'} = 1;

@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Ebay.pm,v 1.14 2006/03/19 03:55:43 Daddy Exp $ ' ;
+# $rcs = ' $Id: Ebay.pm,v 1.16 2007/01/04 00:55:56 Daddy Exp $ ' ;
 
 =head1 NAME
 
@@ -17,7 +17,6 @@ I also use it to control the version number of the distribution.
 =head1 SEE ALSO
 
 L<WWW::Ebay::Customer|WWW::Ebay::Customer>,
-L<WWW::Ebay::Email|WWW::Ebay::Email>,
 L<WWW::Ebay::Listing|WWW::Ebay::Listing>,
 L<WWW::Ebay::Search|WWW::Ebay::Search>,
 L<WWW::Ebay::Session|WWW::Ebay::Session>,
@@ -28,14 +27,14 @@ L<WWW::Search::Ebay::Mature|WWW::Search::Ebay::Mature>
 
 =head1 AUTHOR
 
-Martin Thurn
+Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.html>.
 
 =cut
 
 package WWW::Ebay;
 
 my
-$VERSION = '0.078';
+$VERSION = '0.079';
 
 1;
 

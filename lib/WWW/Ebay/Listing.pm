@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Listing.pm,v 1.6 2005/02/24 15:33:08 Daddy Exp $ ' ;
+# $rcs = ' $Id: Listing.pm,v 1.7 2007/01/04 00:56:49 Daddy Exp $ ' ;
 
 =head1 COPYRIGHT
 
@@ -32,7 +32,7 @@ eBay auction website (www.ebay.com).
 package WWW::Ebay::Listing;
 
 my
-$VERSION = do { my @r = (q$Revision: 1.6 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.7 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 use Carp;
 use WWW::Ebay::Status;
@@ -247,7 +247,7 @@ sub ended
 
 =head1 AUTHOR
 
-Martin Thurn
+Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.html>.
 
 =cut
 

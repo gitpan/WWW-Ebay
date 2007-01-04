@@ -1,5 +1,5 @@
 
-# $Id: Completed.pm,v 1.20 2006/02/20 01:32:12 Daddy Exp $
+# $Id: Completed.pm,v 1.21 2007/01/04 00:59:49 Daddy Exp $
 
 =head1 NAME
 
@@ -49,8 +49,7 @@ Please tell the author if you find any!
 
 Thanks to Troy Arnold <C<troy at zenux.net>> for figuring out how to do this search.
 
-C<WWW::Search::Ebay::Completed> is maintained by Martin Thurn
-<C<mthurn at cpan.org>>.
+Maintained by Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.html>.
 
 =head1 LEGALESE
 
@@ -76,7 +75,7 @@ use strict;
 
 use vars qw( $MAINTAINER $VERSION );
 $MAINTAINER = 'Martin Thurn <mthurn@cpan.org>';
-$VERSION = do { my @r = (q$Revision: 1.20 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.21 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 use constant DEBUG_FUNC => 0;
 

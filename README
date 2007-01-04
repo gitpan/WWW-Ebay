@@ -1,0 +1,13 @@
+Perl Module distribution WWW::Ebay
+
+Allows you to do stuff on ebay.com that requires you to log in, such as:
+
+* Search completed auctions
+* Search mature categories
+* Retrieve your watch-list from your "my eBay" page
+* Retrieve your active auctions from your "my eBay" page
+
+For more information about my Perl Modules, 
+visit http://www.sandcrawler.com/SWB/cpan-modules.html
+
+mthurn at cpan.org
