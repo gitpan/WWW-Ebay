@@ -1,6 +1,8 @@
 # -*- cperl -*-
 
-# $Id: WWW-Search-Ebay-Completed.t,v 1.8 2006/02/18 19:26:27 Daddy Exp $
+# $Id: WWW-Search-Ebay-Completed.t,v 1.9 2007/04/07 20:36:33 Daddy Exp $
+
+# use LWP::Debug qw( + -conns );
 
 use Bit::Vector;
 use Data::Dumper;
@@ -51,7 +53,7 @@ PROMPT
   skip "eBay userid/password not supplied", 11 if (($sUserID   eq '') ||
                                                    ($sPassword eq ''));
   diag("log in as $sUserID...");
-  ok($WWW::Search::Test::oSearch->login($sUserID, $sPassword));
+  ok($WWW::Search::Test::oSearch->login($sUserID, $sPassword), 'logged in');
   # goto TEST_NOW;
 
   # This test returns no results (but we should not get an HTTP error):
@@ -62,7 +64,7 @@ PROMPT
   &tm_run_test('normal', 'lego', 101, undef, $iDebug, $iDump);
  TEST_NOW:
   $iDebug = 0;
-  $iDump = 0;
+  $iDump = 1;
   &tm_run_test('normal', 'shmi', 1, 99, $iDebug, $iDump);
   # Now get the results and inspect them:
   my @ao = $WWW::Search::Test::oSearch->results();

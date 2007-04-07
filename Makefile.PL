@@ -1,5 +1,5 @@
 
-# $Id: Makefile.PL,v 1.25 2006/05/19 11:57:32 Daddy Exp $
+# $Id: Makefile.PL,v 1.27 2007/04/07 20:38:59 Daddy Exp $
 
 use inc::Module::Install;
 use strict;
@@ -11,31 +11,32 @@ abstract('Search and manage eBay auctions');
 license('perl');
 
 build_requires('Bit::Vector' => 0);
-requires('Bit::Vector' => 0);
-requires('Carp' => 0);
-build_requires('Data::Dumper' => 0);
-requires('Data::Dumper' => 0);
-build_requires('Date::Manip' => 0);
-requires('Date::Manip' => 0);
+requires('Bit::Vector');
+requires('Carp');
+requires('Crypt::SSLeay');
+build_requires('Data::Dumper');
+requires('Data::Dumper');
+build_requires('Date::Manip');
+requires('Date::Manip');
 # Email:: modules are only needed for Ebay::Email
-recommends('Email::Send' => 0);
-recommends('Email::Send::Env' => 0);
-recommends('Email::Simple' => 0);
-requires('File::Glob' => 0);
-requires('File::Spec' => 0);
-requires('HTML::Form' => 0);
+recommends('Email::Send');
+recommends('Email::Send::Env');
+recommends('Email::Simple');
+requires('File::Glob');
+requires('File::Spec');
+requires('HTML::Form');
 requires('HTML::Parser' => 3);
-requires('HTML::TreeBuilder' => 0);
-requires('HTTP::Cookies' => 0);
-requires('HTTP::Request::Common' => 0);
-build_requires('IO::Capture::Stderr' => 0);
-requires('LWP::Simple' => 0);
-requires('LWP::UserAgent' => 0);
-build_requires('Test::Inline' => 0);
-build_requires('Test::More' => 0);
+requires('HTML::TreeBuilder');
+requires('HTTP::Cookies');
+requires('HTTP::Request::Common');
+build_requires('IO::Capture::ErrorMessages');
+requires('LWP::Simple');
+requires('LWP::UserAgent');
+build_requires('Test::Inline');
+build_requires('Test::More');
 # Tk is only needed for Email::editor()
 recommends('Tk' => 800);
-requires('URI' => 0);
+requires('URI');
 # We need the version that defines _load_env_useragent:
 requires('WWW::Search' => 2.525);
 # We need the version that has the shipping() method:
@@ -46,7 +47,6 @@ requires('WWW::Search::Ebay' => 2.181);
 # functions:
 build_requires('WWW::Search::Test' => 2.265);
 
-check_nmake();      # check and download nmake.exe for Win32
 &WriteAll;
 
 my @asNeeded;
