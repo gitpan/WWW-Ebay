@@ -1,3 +1,7 @@
+2007-07-22    <Daddy@C-3PO>
+
+	* lib/WWW/Ebay/Session.pm (selling_auctions): fix parser for new page format
+
 2007-04-07    <Daddy@C-3PO>
 
 	* Makefile.PL: fix prerequisite module names

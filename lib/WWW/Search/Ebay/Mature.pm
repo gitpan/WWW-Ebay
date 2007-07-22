@@ -1,5 +1,5 @@
 
-# $Id: Mature.pm,v 1.11 2007/01/04 01:00:03 Daddy Exp $
+# $Id: Mature.pm,v 1.12 2007/07/22 12:20:57 Daddy Exp $
 
 =head1 NAME
 
@@ -67,19 +67,20 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 
 package WWW::Search::Ebay::Mature;
 
+use strict;
+
 use Carp;
 use HTTP::Cookies;
 use WWW::Ebay::Session;
 use WWW::Search::Ebay;
-
-use strict qw( vars );
-use vars qw( @ISA $VERSION $MAINTAINER );
+use base 'WWW::Search::Ebay';
 
 use constant DEBUG_FUNC => 0;
-@ISA = qw( WWW::Search::Ebay );
 
-$VERSION = sprintf("%d.%02d", q$Revision: 1.11 $ =~ /(\d+)\.(\d+)/o);
-$MAINTAINER = 'Martin Thurn <mthurn@cpan.org>';
+our
+$VERSION = sprintf("%d.%02d", q$Revision: 1.12 $ =~ /(\d+)\.(\d+)/o);
+
+my $MAINTAINER = 'Martin Thurn <mthurn@cpan.org>';
 
 sub login
   {

@@ -1,11 +1,11 @@
 
-# $rcs = ' $Id: Search.pm,v 1.6 2007/01/04 00:58:00 Daddy Exp $ ' ;
+# $rcs = ' $Id: Search.pm,v 1.7 2007/07/22 12:20:35 Daddy Exp $ ' ;
 
 package WWW::Ebay::Search;
 
-use WWW::Search::Ebay;
-
 use strict;
+
+use WWW::Search::Ebay;
 
 use vars qw( @ISA );
 @ISA = qw( WWW::Search::Ebay );

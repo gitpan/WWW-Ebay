@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Listing.pm,v 1.7 2007/01/04 00:56:49 Daddy Exp $ ' ;
+# $rcs = ' $Id: Listing.pm,v 1.8 2007/07/22 12:20:27 Daddy Exp $ ' ;
 
 =head1 COPYRIGHT
 
@@ -31,8 +31,10 @@ eBay auction website (www.ebay.com).
 
 package WWW::Ebay::Listing;
 
-my
-$VERSION = do { my @r = (q$Revision: 1.7 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+use strict;
+
+our
+$VERSION = do { my @r = (q$Revision: 1.8 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 use Carp;
 use WWW::Ebay::Status;
@@ -179,10 +181,10 @@ sub _elem
 sub AUTOLOAD
   {
   my $self = shift;
-  # print STDERR " + this is ::Single::AUTOLOAD($AUTOLOAD,@_)\n";
-  $AUTOLOAD =~ s/.*:://;
+  # print STDERR " DDD this is ::Listing::AUTOLOAD($AUTOLOAD,@_)\n";
+  our $AUTOLOAD =~ s/.*:://;
   $AUTOLOAD = lc $AUTOLOAD;
-  # print STDERR " + Auction::AUTOLOAD($AUTOLOAD)\n";
+  # print STDERR " DDD   Listing::AUTOLOAD($AUTOLOAD)\n";
   unless (exists $self->{_allowed}->{$AUTOLOAD})
     {
     carp " --- Method '$AUTOLOAD' not allowed on a ", ref $self, " object";

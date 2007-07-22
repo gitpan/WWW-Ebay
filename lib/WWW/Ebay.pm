@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Ebay.pm,v 1.17 2007/04/07 20:39:28 Daddy Exp $ ' ;
+# $rcs = ' $Id: Ebay.pm,v 1.18 2007/07/22 12:21:09 Daddy Exp $ ' ;
 
 =head1 NAME
 
@@ -33,8 +33,10 @@ Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.
 
 package WWW::Ebay;
 
-my
-$VERSION = '0.081';
+use strict;
+
+our
+$VERSION = '0.082';
 
 1;
 

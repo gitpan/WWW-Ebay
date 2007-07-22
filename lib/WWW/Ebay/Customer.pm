@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Customer.pm,v 1.10 2007/01/04 00:56:29 Daddy Exp $ ' ;
+# $rcs = ' $Id: Customer.pm,v 1.11 2007/07/22 12:20:16 Daddy Exp $ ' ;
 
 =head1 COPYRIGHT
 
@@ -25,28 +25,6 @@ Object (hash) values and editor (GUI) widgets
 correspond to pieces of information needed to identify a
 buyer or seller of a (successful) auction.
 
-=head1 RETURN VALUE
-
-=head1 ERRORS
-
-=head1 EXAMPLES
-
-=head1 FILES
-
-=head1 ENVIRONMENT
-
-=head1 SEE ALSO
-
-=head1 NOTES
-
-=head1 CAVEATS
-
-=head1 DIAGNOSTICS
-
-=head1 BUGS
-
-=head1 RESTRICTIONS
-
 =head1 AUTHOR
 
 Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.html>.
@@ -55,15 +33,15 @@ Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.
 
 package WWW::Ebay::Customer;
 
+use strict;
+
 require 5;
 
 use Carp;
 use Data::Dumper;  # for debugging only
 
-use strict;
-
 use vars qw( $AUTOLOAD $VERSION );
-$VERSION = do { my @r = (q$Revision: 1.10 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.11 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 use constant DEBUG_NEW => 0;
 

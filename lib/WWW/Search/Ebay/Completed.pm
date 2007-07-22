@@ -1,5 +1,5 @@
 
-# $Id: Completed.pm,v 1.21 2007/01/04 00:59:49 Daddy Exp $
+# $Id: Completed.pm,v 1.22 2007/07/22 12:20:46 Daddy Exp $
 
 =head1 NAME
 
@@ -63,19 +63,20 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 
 package WWW::Search::Ebay::Completed;
 
+use strict;
+
 use Carp;
 use Date::Manip;
 # We need the version that was modified to be able to parse completed
 # auction search results:
 use WWW::Search::Ebay 2.180;
 use WWW::Ebay::Session;
-@ISA = qw( WWW::Search::Ebay );
+use base 'WWW::Search::Ebay';
 
-use strict;
+our
+$VERSION = do { my @r = (q$Revision: 1.22 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
-use vars qw( $MAINTAINER $VERSION );
-$MAINTAINER = 'Martin Thurn <mthurn@cpan.org>';
-$VERSION = do { my @r = (q$Revision: 1.21 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+my $MAINTAINER = 'Martin Thurn <mthurn@cpan.org>';
 
 use constant DEBUG_FUNC => 0;
 

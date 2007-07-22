@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Session.pm,v 1.51 2007/01/04 00:58:18 Daddy Exp $ ' ;
+# $rcs = ' $Id: Session.pm,v 1.52 2007/07/22 12:19:55 Daddy Exp $ ' ;
 
 =head1 COPYRIGHT
 
@@ -32,6 +32,8 @@ Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.
 
 package WWW::Ebay::Session;
 
+use strict;
+
 require 5.006;
 
 use Data::Dumper;  # for debugging only
@@ -49,8 +51,6 @@ use WWW::Search;
 use WWW::Search::Ebay 2.181;
 # We need the version that has the shipping() method:
 use WWW::SearchResult 2.070;
-
-use strict;
 
 use constant DEBUG_EMAIL => 0;
 use constant DEBUG_FETCH => 0;
@@ -535,9 +535,11 @@ sub selling_auctions
     if (ref $oAselling)
       {
       DEBUG_SELLING && _debug(" +   found <SPAN> for SELLING section: ", $oAselling->as_HTML, "\n");
-      $oAselling = $oAselling->parent;
+      $oAselling = $oAselling->look_up(_tag => 'td');
+      last PARSE_SELLING_SECTION if ! ref($oAselling);
+      DEBUG_SELLING && _debug(" +     parent is ==", $oAselling->as_HTML, "==\n");
       my $s = $oAselling->as_text;
-      $s =~ m!\s+\(\s*(\d+)\s+ITEM!i; # + + Emacs indentation fix!
+      $s =~ m!\s+\(\s*(\d+)\s+ITEM!i;
       $iCount = $1 || 0;
       print STDERR " +   there should be $iCount SELLING auctions\n" if DEBUG_SELLING;
       } # if
@@ -550,7 +552,7 @@ sub selling_auctions
       last PARSE_SELLING_SECTION;
       } # if
     my $oTable = $oTree->look_down(_tag => 'table',
-                                   'tableName' => 'Selling',
+                                   id => 'Selling',
                                   );
     if (! ref $oTable)
       {
@@ -688,7 +690,7 @@ sub selling_auctions
       }
     last PARSE_SOLD_SECTION if ($iCount < 0);
     my $oTable = $oTree->look_down(_tag => 'table',
-                                   tableName => 'Sold',
+                                   id => 'Sold',
                                   );
     if (! ref $oTable)
       {
@@ -727,12 +729,9 @@ sub selling_auctions
       # section of the page:
       $oWEL->status->listed('yes');
       $oWEL->status->ended('yes');
-      # Column 3 = format?
+      # Next column = quantity:
       $oTD = shift @aoTD;
-      DEBUG_SELLING && _debug(" +   <TD> #3 ==", $oTD->as_HTML, "==\n");
-      # Column 4 = quantity:
-      $oTD = shift @aoTD;
-      DEBUG_SELLING && _debug(" +   <TD> #4 ==", $oTD->as_HTML, "==\n");
+      DEBUG_SELLING && _debug(" +   quantity <TD> ==", $oTD->as_HTML, "==\n");
       # next Column = Bid Price
       $oTD = shift @aoTD;
       if (! ref($oTD))

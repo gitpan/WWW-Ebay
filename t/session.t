@@ -22,9 +22,9 @@ SKIP:
                                                    ($sPassword eq ''));
   diag("Trying to sign in as $sUserID, with password from env.var EBAY_PASSWORD...");
   my $oSession = new WWW::Ebay::Session($sUserID, $sPassword);
-  ok(ref($oSession));
+  isa_ok($oSession, 'WWW::Ebay::Session');
   my $s = $oSession->signin;
-  isnt($s, 'FAILED', 'sign-in');
+  isnt($s, 'FAILED', 'signed-in');
   diag("Fetching $sUserID\'s auctions...");
   my @aoListings = $oSession->selling_auctions(); # 'Pages/selling.html');
   my $iAnyError = $oSession->any_error;
