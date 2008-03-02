@@ -1,5 +1,5 @@
 
-# $Id: session.t,v 1.10 2006/03/22 01:13:47 Daddy Exp $
+# $Id: session.t,v 1.11 2008/03/02 18:17:57 Daddy Exp $
 
 use ExtUtils::testlib;
 
@@ -25,10 +25,11 @@ SKIP:
   isa_ok($oSession, 'WWW::Ebay::Session');
   my $s = $oSession->signin;
   isnt($s, 'FAILED', 'signed-in');
-  diag("Fetching $sUserID\'s auctions...");
+
+  diag("Fetching $sUserID\'s current auctions...");
   my @aoListings = $oSession->selling_auctions(); # 'Pages/selling.html');
   my $iAnyError = $oSession->any_error;
-  diag($oSession->error);
+  diag($oSession->error) if $oSession->error;
  SKIP:
     {
     skip sprintf("because %s has no auctions on-line", $oSession->{_user}), 1 if (@aoListings == 0);
@@ -40,14 +41,62 @@ SKIP:
       {
       # diag(sprintf("  %s: %s", $oListing->id, $oListing->status->as_text));
       diag($oListing->as_string);
+      ok($oListing->status->listed);
+      ok(! $oListing->status->ended);
       like($oListing->id, qr{\A\d+\Z}, 'id is an integer');
+      isnt($oListing->title, '', 'title is not empty');
       like($oListing->bidcount, qr{\A\d+\Z}, 'bidcount is an integer');
       like($oListing->bidmax, qr{\A\d+\Z}, 'bidmax is an integer');
-      if ($oListing->status->ended)
-        {
-        like($oListing->shipping, qr{\A\d+\Z}, 'shipping is an integer');
-        like($oListing->datestart, qr{\A\d+\Z}, 'datestart is an integer');
-        } # if
+      # like($oListing->datestart, qr{\A\d+\Z}, 'datestart is an integer');
+      } # foreach LISTING
+    } # end of SKIP block
+
+  diag("Fetching $sUserID\'s ended auctions, sold items...");
+  @aoListings = $oSession->sold_auctions(); # 'Pages/selling.html');
+  $iAnyError = $oSession->any_error;
+  diag($oSession->error) if $oSession->error;
+ SKIP:
+    {
+    skip sprintf("because %s has no sold auctions on-line", $oSession->{_user}), 1 if (@aoListings == 0);
+    diag($oSession->error);
+    # ok(! $iAnyError);
+    diag(sprintf(q{The following ended, sold auctions were found on %s's ebay selling page:}, $oSession->{_user}));
+ LISTING:
+    foreach my $oListing (@aoListings)
+      {
+      # diag(sprintf("  %s: %s", $oListing->id, $oListing->status->as_text));
+      diag($oListing->as_string);
+      ok($oListing->status->ended, 'auction has ended');
+      like($oListing->id, qr{\A\d+\Z}, 'id is an integer');
+      isnt($oListing->title, '', 'title is not empty');
+      isnt($oListing->winnerid, '', 'winnerid is not empty');
+      like($oListing->bidmax, qr{\A\d+\Z}, 'bidmax is an integer');
+      like($oListing->shipping, qr{\A(\d+|unknown)\Z}, 'shipping looks ok');
+      } # foreach LISTING
+    } # end of SKIP block
+
+  diag("Fetching $sUserID\'s ended auctions, unsold items...");
+  @aoListings = $oSession->unsold_auctions(); # 'Pages/selling.html');
+  $iAnyError = $oSession->any_error;
+  diag($oSession->error) if $oSession->error;
+ SKIP:
+    {
+    skip sprintf("because %s has no unsold auctions on-line", $oSession->{_user}), 1 if (@aoListings == 0);
+    diag($oSession->error);
+    # ok(! $iAnyError);
+    diag(sprintf(q{The following ended, unsold auctions were found on %s's ebay selling page:}, $oSession->{_user}));
+ LISTING:
+    foreach my $oListing (@aoListings)
+      {
+      # diag(sprintf("  %s: %s", $oListing->id, $oListing->status->as_text));
+      diag($oListing->as_string);
+      ok($oListing->status->ended, 'auction has ended');
+      like($oListing->id, qr{\A\d+\Z}, 'id is an integer');
+      isnt($oListing->title, '', 'title is not empty');
+      is($oListing->bidcount, 0, 'bidcount is zero');
+      like($oListing->bidmax, qr{\A\d+\Z}, 'bidmax is an integer');
+      like($oListing->shipping, qr{\A(\d+|unknown)\Z}, 'shipping looks ok');
+      like($oListing->datestart, qr{\A\d+\Z}, 'datestart is an integer');
       } # foreach LISTING
     } # end of SKIP block
   } # end of SKIP block

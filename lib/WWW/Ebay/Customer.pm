@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Customer.pm,v 1.11 2007/07/22 12:20:16 Daddy Exp $ ' ;
+# $rcs = ' $Id: Customer.pm,v 1.14 2008/03/02 18:16:26 Daddy Exp $ ' ;
 
 =head1 COPYRIGHT
 
@@ -25,15 +25,14 @@ Object (hash) values and editor (GUI) widgets
 correspond to pieces of information needed to identify a
 buyer or seller of a (successful) auction.
 
-=head1 AUTHOR
-
-Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.html>.
+=head1 METHODS
 
 =cut
 
 package WWW::Ebay::Customer;
 
 use strict;
+use warnings;
 
 require 5;
 
@@ -41,7 +40,7 @@ use Carp;
 use Data::Dumper;  # for debugging only
 
 use vars qw( $AUTOLOAD $VERSION );
-$VERSION = do { my @r = (q$Revision: 1.11 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.14 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 use constant DEBUG_NEW => 0;
 
@@ -54,6 +53,12 @@ my %hsPermitted = (
                    'address2' => '',
                    'address3' => '',
                   );
+
+=head2 new
+
+Create a new object of this type.
+
+=cut
 
 sub new
   {
@@ -110,8 +115,16 @@ sub AUTOLOAD
 
 sub DESTROY
   {
-  }
+  } # DESTROY
 
+
+=head2 editor
+
+Creates a Tk widget for editing a customer's information.
+Takes one argument, an existing Tk widget into which the editor
+widget will be packed.  Should be a Frame or MainWindow or similar.
+
+=cut
 
 sub editor
   {
@@ -181,6 +194,18 @@ sub editor
 
 use constant DEBUG_PASTE => 0;
 
+=head2 editor_paste
+
+Takes one argument, a string.
+Tries to interpret the argument as a name and/or address as follows:
+If the string contains three or more lines,
+put the first line into the name and the remaining lines into the address.
+If the string contains two lines,
+put the two lines into the address.
+Otherwise, do nothing.
+
+=cut
+
 sub editor_paste
   {
   # Smart paste:
@@ -231,6 +256,13 @@ sub editor_paste
   } # editor_paste
 
 
+=head2 editor_finish
+
+You should call this method after editing is finished,
+before destroying the Tk widget.
+
+=cut
+
 sub editor_finish
   {
   my $self = shift;
@@ -276,6 +308,12 @@ sub copy_to
 
 
 1;
+
+=head1 AUTHOR
+
+Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.html>.
+
+=cut
 
 __END__
 

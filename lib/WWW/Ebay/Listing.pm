@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Listing.pm,v 1.8 2007/07/22 12:20:27 Daddy Exp $ ' ;
+# $rcs = ' $Id: Listing.pm,v 1.9 2008/03/02 18:16:27 Daddy Exp $ ' ;
 
 =head1 COPYRIGHT
 
@@ -32,9 +32,10 @@ eBay auction website (www.ebay.com).
 package WWW::Ebay::Listing;
 
 use strict;
+use warnings;
 
 our
-$VERSION = do { my @r = (q$Revision: 1.8 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.9 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 use Carp;
 use WWW::Ebay::Status;

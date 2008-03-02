@@ -1,6 +1,6 @@
 #!/usr/local/bin/perl -w
 
-# $rcs = ' $Id: Status.pm,v 1.14 2007/07/22 12:20:04 Daddy Exp $ ' ;
+# $rcs = ' $Id: Status.pm,v 1.15 2008/03/02 18:16:27 Daddy Exp $ ' ;
 
 =head1 NAME
 
@@ -89,9 +89,10 @@ Please tell the author if you find any.
 package WWW::Ebay::Status;
 
 use strict;
+use warnings;
 
 my
-$VERSION = do { my @r = (q$Revision: 1.14 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.15 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 # We use a bitvector for simplicity, even though many of the states
 # are mutually exclusive.

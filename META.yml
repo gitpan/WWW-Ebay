@@ -1,16 +1,17 @@
 --- 
 abstract: Search and manage eBay auctions
-author: Martin Thurn <mthurn@cpan.org>
+author: 
+  - Martin Thurn <mthurn@cpan.org>
 build_requires: 
   Bit::Vector: 0
   Data::Dumper: 0
   Date::Manip: 0
-  IO::Capture::ErrorMessages: 0
+  IO::Capture::Stderr: 0
   Test::Inline: 0
   Test::More: 0
   WWW::Search::Test: 2.265
 distribution_type: module
-generated_by: Module::Install version 0.67
+generated_by: Module::Install version 0.68
 license: perl
 meta-spec: 
   url: http://module-build.sourceforge.net/META-spec-v1.3.html
@@ -21,9 +22,6 @@ no_index:
     - inc
     - t
 recommends: 
-  Email::Send: 0
-  Email::Send::Env: 0
-  Email::Simple: 0
   Tk: 800
 requires: 
   Bit::Vector: 0
@@ -44,4 +42,4 @@ requires:
   WWW::Search: 2.525
   WWW::Search::Ebay: 2.181
   WWW::SearchResult: 2.07
-version: 0.082
+version: 0.083

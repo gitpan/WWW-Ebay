@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Ebay.pm,v 1.18 2007/07/22 12:21:09 Daddy Exp $ ' ;
+# $rcs = ' $Id: Ebay.pm,v 1.20 2008/03/02 18:16:25 Daddy Exp $ ' ;
 
 =head1 NAME
 
@@ -7,12 +7,12 @@ WWW::Ebay
 
 =head1 DESCRIPTION
 
-This is an empty package.  It only exists so that CPAN users can say
+This is an empty module.  It only exists so that CPAN users can say
 "install WWW::Ebay" (and CPANPLUS users can say "i WWW::Ebay") and
 they'll get what they expect.  Well, actually I'm not sure what they
 expect, but they'll get something reasonable.
 
-I also use it to control the version number of the distribution.
+It is also used to control the version number of the distribution.
 
 =head1 SEE ALSO
 
@@ -34,9 +34,10 @@ Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.
 package WWW::Ebay;
 
 use strict;
+use warnings;
 
 our
-$VERSION = '0.082';
+$VERSION = '0.083';
 
 1;
 

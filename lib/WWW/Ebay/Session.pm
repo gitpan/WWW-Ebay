@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Session.pm,v 1.52 2007/07/22 12:19:55 Daddy Exp $ ' ;
+# $rcs = ' $Id: Session.pm,v 1.55 2008/03/02 18:16:27 Daddy Exp $ ' ;
 
 =head1 COPYRIGHT
 
@@ -33,6 +33,7 @@ Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.
 package WWW::Ebay::Session;
 
 use strict;
+use warnings;
 
 require 5.006;
 
@@ -56,9 +57,10 @@ use constant DEBUG_EMAIL => 0;
 use constant DEBUG_FETCH => 0;
 use constant DEBUG_FUNC => 0;
 use constant DEBUG_SELLING => 0;
+use constant DEBUG_SOLD => 0;
+use constant DEBUG_UNSOLD => 0;
 use constant DEBUG_WATCH => 0;
 use constant DEBUG_READ_LOCAL_FILES => 0;
-
 
 sub _debug
   {
@@ -66,11 +68,18 @@ sub _debug
   print STDERR @_;
   } # _debug
 
+=item new
+
+Creates a new object of this type.
+
+=cut
+
 sub new
   {
-  my $proto = shift;
+  my $class = shift;
+  # This is NOT a clone method:
+  return undef if ref $class;
   my ($sUserID, $sPassword) = @_;
-  my $class = ref($proto) || $proto;
   my $self = {
               # Create cookie jar and UserAgent not now, but only when
               # needed:
@@ -80,6 +89,10 @@ sub new
               '_pass' => $sPassword,
               '_user' => $sUserID,
               '_response' => undef,
+              '_selling_page' => '',
+              'raoSold' => undef,
+              'raoSelling' => undef,
+              'raoWatching' => undef,
              };
   bless ($self, $class);
   return $self;
@@ -369,6 +382,11 @@ Returns the HTML of the "My Selling" page for this user.
 sub selling_page
   {
   my $self = shift;
+  if ($self->{_selling_page} ne '')
+    {
+    DEBUG_SELLING && print STDERR " DDD   short-circuited _selling_page\n";
+    return $self->{_selling_page};
+    } # if
   my $sUserID = $self->{_user};
   my $sPasswordEncrypted = $self->signin();
   print STDERR " + sPasswordEncrypted is ===$sPasswordEncrypted===\n" if DEBUG_FETCH;
@@ -376,6 +394,7 @@ sub selling_page
   my $sURL = qq{http://cgi6.ebay.com/aw-cgi/ebayISAPI.dll?MyeBayItemsSelling&userid=$sUserID&pass=$sPasswordEncrypted&first=N&sellerSort=3&bidderSort=3&watchSort=3&dayssince=30};
   $sURL = qq{http://my.ebay.com/ws/ebayISAPI.dll?MyeBay&userid=$sUserID&pass=$sPasswordEncrypted&first=N&sellerSort=3&bidderSort=3&watchSort=3&dayssince=30};
   my $sPage = $self->fetch_any_ebay_page($sURL, 'selling');
+  $self->{_selling_page} = $sPage;
   return $sPage;
   } # selling_page
 
@@ -391,6 +410,7 @@ Note that any time/dates returned will be U.S. Pacific time zone.
 sub watchlist_auctions
   {
   my $self = shift;
+  return @{$self->{raoWatching}} if $self->{raoWatching};
   my $sFname = shift() || '';
   my $sPage = $self->selling_page;
   if (($sFname ne '') && (open PAGE, '>', $sFname))
@@ -403,12 +423,13 @@ sub watchlist_auctions
   # Our return value, a list of WWW::Search::Result objects:
   my @aoWSR;
 
-  my $oTree = HTML::TreeBuilder->new_from_content($sPage);
+  my $oTree = $self->{_selling_tree} || HTML::TreeBuilder->new_from_content($sPage);
   unless (ref $oTree)
     {
     _debug " --- can not parse the response from ebay\n";
     return ();
     } # unless
+  $self->{_selling_tree} = $oTree;
   my @aoTDtitle = $oTree->look_down(_tag => 'td',
                                     class => 'c_Title',
                                     colspan => 5,
@@ -490,12 +511,15 @@ sub watchlist_auctions
         }
       } # foreach COUSIN_TD_TAG
     } # foreach TITLE_TD_TAG
+  $self->{raoWatching} = \@aoWSR;
   return @aoWSR;
   } # watchlist_auctions
 
+
 =item selling_auctions
 
-Returns a list of WWW::Ebay::Listing objects.
+Returns a list of WWW::Ebay::Listing objects representing the auctions
+currently active.
 
 Note that any time/dates returned will be U.S. Pacific time zone.
 
@@ -504,6 +528,7 @@ Note that any time/dates returned will be U.S. Pacific time zone.
 sub selling_auctions
   {
   my $self = shift;
+  return @{$self->{raoSelling}} if $self->{raoSelling};
   my $sFname = shift() || '';
   my $sPage = $self->selling_page;
   if (($sFname ne '') && (open PAGE, '>', $sFname))
@@ -516,12 +541,13 @@ sub selling_auctions
   # Our return value, a list of WWW::Ebay::Listing objects:
   my @aoWEL;
 
-  my $oTree = HTML::TreeBuilder->new_from_content($sPage);
+  my $oTree = $self->{_selling_tree} || HTML::TreeBuilder->new_from_content($sPage);
   unless (ref $oTree)
     {
     _debug " --- can not parse the response from ebay\n";
     return ();
     } # unless
+  $self->{_selling_tree} = $oTree;
  PARSE_SELLING_SECTION:
   while (1)
     {
@@ -663,6 +689,51 @@ sub selling_auctions
       } # while $oTR
     last PARSE_SELLING_SECTION;
     } # end of fake while(1) loop for PARSE_SELLING_SECTION
+  $self->{raoSelling} = \@aoWEL;
+  return @aoWEL;
+  } # selling_auctions
+
+
+=item sold_auctions
+
+Returns a list of WWW::Ebay::Listing objects representing the auctions
+that have ended and received bids.
+
+Note that any time/dates returned will be U.S. Pacific time zone.
+
+=cut
+
+sub sold_auctions
+  {
+  my $self = shift;
+  return @{$self->{raoSold}} if $self->{raoSold};
+  my $sFname = shift() || '';
+  my $sPage = $self->selling_page;
+  if (($sFname ne '') && (open PAGE, '>', $sFname))
+    {
+    print PAGE $sPage;
+    close PAGE or warn;
+    } # if
+  _debug " +   start parsing webpage...\n" if DEBUG_SOLD;
+  &Date_Init('TZ=US/Pacific');
+  # Our return value, a list of WWW::Ebay::Listing objects:
+  my $oTree;
+  if (ref $self->{_selling_tree})
+    {
+    $oTree = $self->{_selling_tree};
+    DEBUG_SOLD && print STDERR " DDD   short-circuited _selling_tree\n";
+    }
+  else
+    {
+    $oTree = HTML::TreeBuilder->new_from_content($sPage);
+    unless (ref $oTree)
+      {
+      _debug " --- can not parse the response from ebay\n";
+      return ();
+      } # unless
+    $self->{_selling_tree} = $oTree;
+    }
+  my @aoWEL;
  PARSE_SOLD_SECTION:
   while (1)
     {
@@ -673,14 +744,14 @@ sub selling_auctions
                               );
     if (ref $oA)
       {
-      DEBUG_SELLING && _debug(" +   found <SPAN> for SOLD section: ", $oA->as_HTML, "\n");
+      DEBUG_SOLD && _debug(" +   found <SPAN> for SOLD section: ", $oA->as_HTML, "\n");
       $oA = $oA->parent;
       my $s = $oA->as_text;
       $iCount = -1;
       if ($s =~ m!\(\s*(\d+)\s+ITEM!i)
         {
         $iCount = $1;
-        DEBUG_SELLING && _debug(" +   there should be $iCount sold auctions\n");
+        DEBUG_SOLD && _debug(" +   there should be $iCount sold auctions\n");
         } # if
       } # if
     else
@@ -697,12 +768,10 @@ sub selling_auctions
       $self->_add_error("Did not find <TABLE> for SOLD section.  ");
       last PARSE_SOLD_SECTION;
       } # if
-    # print STDERR " +   sold <TABLE> is ==", $oTable->as_HTML, "==\n" if DEBUG_SELLING;
+    # print STDERR " +   sold <TABLE> is ==", $oTable->as_HTML, "==\n" if DEBUG_SOLD;
     my @aoTR = $oTable->look_down(_tag => 'tr',
                                   bgcolor => '#f4f4f4',
                                  );
-    # Ignore the header row:
-    shift @aoTR;
  SOLD_TR:
     while (my $oTR = shift @aoTR)
       {
@@ -711,7 +780,7 @@ sub selling_auctions
       # Got a row containing an auction.  Actually they are groups of
       # rows; one row has the buyer's ID, the next rows have all the
       # auctions that person won.
-      _debug(" +   <TR> containing seller ==", $oTR->as_HTML, "==\n") if (2 < DEBUG_SELLING);
+      _debug(" +   <TR> containing seller ==", $oTR->as_HTML, "==\n") if (2 < DEBUG_SOLD);
       my @aoTD = $oTR->look_down(_tag => 'td');
       # Column 1 = checkbox:
       $oTD = shift @aoTD;
@@ -731,7 +800,7 @@ sub selling_auctions
       $oWEL->status->ended('yes');
       # Next column = quantity:
       $oTD = shift @aoTD;
-      DEBUG_SELLING && _debug(" +   quantity <TD> ==", $oTD->as_HTML, "==\n");
+      DEBUG_SOLD && _debug(" +   quantity <TD> ==", $oTD->as_HTML, "==\n");
       # next Column = Bid Price
       $oTD = shift @aoTD;
       if (! ref($oTD))
@@ -739,38 +808,49 @@ sub selling_auctions
         $self->_add_error("Did not find <TD> for SOLD ITEM end price.  ");
         next SOLD_TR;
         } # if
-      DEBUG_SELLING && _debug(" +     <TD> containing EndPrice ==", $oTD->as_HTML, "==\n");
+      DEBUG_SOLD && _debug(" +     <TD> containing EndPrice ==", $oTD->as_HTML, "==\n");
       $s = $oTD->as_text;
-      print STDERR " +     raw End Price is ==$s==\n" if DEBUG_SELLING;
+      print STDERR " +     raw End Price is ==$s==\n" if DEBUG_SOLD;
       $s =~ tr!.0123456789!!dc;
       # Convert dollars to cents:
       my $iBidCents = int((0.005 + $s) * 100);
-      print STDERR " +     Bid Cents is ==$iBidCents==\n" if DEBUG_SELLING;
+      print STDERR " +     Bid Cents is ==$iBidCents==\n" if DEBUG_SOLD;
       $oWEL->bidmax($iBidCents);
-      # next Column = Total Price with shipping
+      # next Column = Total Price with shipping.  If the buyer has not
+      # done checkout (and the seller has not sent an invoice), this
+      # will be '--'.
       $oTD = shift @aoTD;
-      DEBUG_SELLING && _debug(" +   <TD> of total price ==", $oTD->as_HTML, "==\n");
+      DEBUG_SOLD && _debug(" +   <TD> of total price ==", $oTD->as_HTML, "==\n");
       $s = $oTD->as_text || '';
-      print STDERR " +     raw Total Price is ==$s==\n" if DEBUG_SELLING;
-      $s =~ tr!.0123456789!!dc;
-      if ($s !~ m!\d!)
+      print STDERR " +     raw Total Price is ==$s==\n" if DEBUG_SOLD;
+      if ($s eq '--')
         {
-        $self->_add_error("ITEM's total price is not a number.  ");
-        next SOLD_TR;
-        } # if
-      # Convert dollars to cents:
-      my $iTotalCents = int((0.005 + $s) * 100);
-      print STDERR " +     Total Cents is ==$iTotalCents==\n" if DEBUG_SELLING;
-      my $iShippingCents = $iTotalCents - $iBidCents;
-      $oWEL->shipping($iShippingCents);
+        $oWEL->shipping('unknown');
+        }
+      else
+        {
+        $s =~ tr!.0123456789!!dc;
+        if ($s !~ m!\d!)
+          {
+          $self->_add_error("sold item's total price is not a number.  ");
+          next SOLD_TR;
+          } # if
+        # Convert dollars to cents:
+        my $iTotalCents = int((0.005 + $s) * 100);
+        print STDERR " +     Total Cents is ==$iTotalCents==\n" if DEBUG_SOLD;
+        my $iShippingCents = $iTotalCents - $iBidCents;
+        $oWEL->shipping($iShippingCents);
+        } # else
       # Go to the next row:
-      $oTR = shift @aoTR;
+      $oTR = $oTR->left;
       if (! ref $oTR)
         {
         next SOLD_TR;
         } # if
+      DEBUG_SOLD && _debug(" +   <TR> of next row ==", $oTR->as_HTML, "==\n");
       $oA = $oTR->look_down(_tag => 'a');
       next SOLD_TR unless ref $oA;
+      DEBUG_SOLD && _debug(" +   <A> of title ==", $oA->as_HTML, "==\n");
       my $sTitle = $oA->as_text;
       $sTitle =~ s![\s\t\r\n]+\Z!!;
       $oWEL->title($sTitle);
@@ -783,6 +863,43 @@ sub selling_auctions
       } # while
     last PARSE_SOLD_SECTION;
     } # end of fake while(1) loop for PARSE_SOLD_SECTION
+  $self->{raoSold} = \@aoWEL;
+  return @aoWEL;
+  } # sold_auctions
+
+
+=item unsold_auctions
+
+Returns a list of WWW::Ebay::Listing objects representing the auctions
+that have ended but received no bids.
+
+Note that any time/dates returned will be U.S. Pacific time zone.
+
+=cut
+
+sub unsold_auctions
+  {
+  my $self = shift;
+  return @{$self->{raoUnsold}} if $self->{raoUnsold};
+  my $sFname = shift() || '';
+  my $sPage = $self->selling_page;
+  if (($sFname ne '') && (open PAGE, '>', $sFname))
+    {
+    print PAGE $sPage;
+    close PAGE or warn;
+    } # if
+  _debug " +   start parsing webpage...\n" if DEBUG_UNSOLD;
+  &Date_Init('TZ=US/Pacific');
+  # Our return value, a list of WWW::Ebay::Listing objects:
+  my @aoWEL;
+
+  my $oTree = $self->{_selling_tree} || HTML::TreeBuilder->new_from_content($sPage);
+  unless (ref $oTree)
+    {
+    _debug " --- can not parse the response from ebay\n";
+    return ();
+    } # unless
+  $self->{_selling_tree} = $oTree;
  PARSE_UNSOLD_SECTION:
   while (1)
     {
@@ -794,11 +911,11 @@ sub selling_auctions
                                      );
     if (ref $oAunsold)
       {
-      print STDERR " +   found <A> for UNSOLD section: ", $oAunsold->as_HTML, "\n" if DEBUG_SELLING;
+      print STDERR " +   found <A> for UNSOLD section: ", $oAunsold->as_HTML, "\n" if DEBUG_UNSOLD;
       my $s = $oAunsold->as_text;
       $s =~ m!\(\s*(\d+)\s+Items?!;
       $iCount = $1 || 0;
-      print STDERR " +   there should be $iCount UNSOLD auctions\n" if DEBUG_SELLING;
+      print STDERR " +   there should be $iCount UNSOLD auctions\n" if DEBUG_UNSOLD;
       } # if
     if ($iCount <= 0)
       {
@@ -810,7 +927,7 @@ sub selling_auctions
       $self->_add_error("Did not find master <TABLE> for UNSOLD section.  ");
       last PARSE_UNSOLD_SECTION;
       } # if
-    print STDERR " +   ancestor <TABLE> is ==", $oTable->as_HTML, "==\n" if DEBUG_SELLING;
+    print STDERR " +   ancestor <TABLE> is ==", $oTable->as_HTML, "==\n" if DEBUG_UNSOLD;
     # The heart of the matter is in the n-th table over from this one:
     my $iTable = 2;
     do
@@ -831,7 +948,7 @@ sub selling_auctions
       $self->_add_error("Did not find slave <TABLE> for UNSOLD section.  ");
       last PARSE_UNSOLD_SECTION;
       } # if
-    print STDERR " +   n-th TABLE sibling of ancestor <TABLE> is ==", $oTable->as_HTML, "==\n" if DEBUG_SELLING;
+    print STDERR " +   n-th TABLE sibling of ancestor <TABLE> is ==", $oTable->as_HTML, "==\n" if DEBUG_UNSOLD;
     my @aoTR = $oTable->look_down('_tag' => 'tr');
  TR:
     while (my $oTR = shift @aoTR)
@@ -841,7 +958,7 @@ sub selling_auctions
       # Got a row containing an auction.  Actually they are pairs of
       # rows; one row has the auction title, the next row has all the
       # details.
-      print STDERR " +   <TR> containing unsold auction title ==", $oTR->as_HTML, "==\n" if DEBUG_SELLING;
+      print STDERR " +   <TR> containing unsold auction title ==", $oTR->as_HTML, "==\n" if DEBUG_UNSOLD;
       my $oA = $oTR->look_down('_tag' => 'a');
       next TR unless ref $oA;
       # Make sure this is really an auction title/link:
@@ -852,12 +969,12 @@ sub selling_auctions
       my $sTitle = $oA->as_text;
       $sTitle =~ s![\s\t\r\n]+\Z!!;
       $oWEL->title($sTitle);
-      print STDERR " +     title ==$sTitle==\n" if DEBUG_SELLING;
+      print STDERR " +     title ==$sTitle==\n" if DEBUG_UNSOLD;
       $oTD = $oA->look_up('_tag' => 'td');
       next TR unless ref $oTD;
       $oTD = $oTD->left;
       next TR unless ref $oTD;
-      print STDERR " +     <TD> containing Item# ==", $oTD->as_HTML, "==\n" if DEBUG_SELLING;
+      print STDERR " +     <TD> containing Item# ==", $oTD->as_HTML, "==\n" if DEBUG_UNSOLD;
       $s = $oTD->as_text;
       # Delete all but numbers:
       $s =~ tr!0123456789!!dc;
@@ -868,9 +985,9 @@ sub selling_auctions
       } # while $oTR
     last PARSE_UNSOLD_SECTION;
     } # end of fake while(1) loop for PARSE_UNSOLD_SECTION
+  $self->{raoUnsold} = \@aoWEL;
   return @aoWEL;
-  } # selling_auctions
-
+  } # unsold_auctions
 
 # =item get_user_email
 
@@ -926,6 +1043,14 @@ sub cookie_jar
   $self->{_cookie_jar};
   } # cookie_jar
 
+
+=item user_agent
+
+Returns a user_agent suitable for requesting Ebay webpages.
+If you need special processing on your network, you can override this method.
+You need to set the cookie_jar to $self->cookie_jar.
+
+=cut
 
 sub user_agent
   {

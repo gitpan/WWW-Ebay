@@ -1,5 +1,5 @@
 
-# $Id: Mature.pm,v 1.12 2007/07/22 12:20:57 Daddy Exp $
+# $Id: Mature.pm,v 1.14 2008/03/02 18:16:27 Daddy Exp $
 
 =head1 NAME
 
@@ -68,6 +68,7 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 package WWW::Search::Ebay::Mature;
 
 use strict;
+use warnings;
 
 use Carp;
 use HTTP::Cookies;
@@ -78,9 +79,17 @@ use base 'WWW::Search::Ebay';
 use constant DEBUG_FUNC => 0;
 
 our
-$VERSION = sprintf("%d.%02d", q$Revision: 1.12 $ =~ /(\d+)\.(\d+)/o);
+$VERSION = sprintf("%d.%02d", q$Revision: 1.14 $ =~ /(\d+)\.(\d+)/o);
 
 my $MAINTAINER = 'Martin Thurn <mthurn@cpan.org>';
+
+=head2 login
+
+Takes two string arguments,
+the eBay userid and the eBay password.
+(See WWW::Search for more information.)
+
+=cut
 
 sub login
   {
@@ -109,7 +118,13 @@ sub login
   return 1;
   } # login
 
-# private
+
+=head2 native_setup_search (private)
+
+This method does the heavy-lifting after native_query() is called.
+
+=cut
+
 sub native_setup_search
   {
   my ($self, $native_query, $rhOptsArg) = @_;
@@ -124,6 +139,13 @@ sub native_setup_search
   return $self->SUPER::native_setup_search($native_query, $rhOptsArg);
   } # native_setup_search
 
+
+=head2 http_request
+
+This method does the heavy-lifting of fetching encrypted pages from ebay.com.
+(See WWW::Search for more information.)
+
+=cut
 
 sub http_request
   {
@@ -142,7 +164,7 @@ sub http_request
   } # http_request
 
 
-sub preprocess_results_page_OFF
+sub _preprocess_results_page
   {
   my $self = shift;
   my $sPage = shift;

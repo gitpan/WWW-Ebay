@@ -1,5 +1,5 @@
 
-# $Id: Makefile.PL,v 1.27 2007/04/07 20:38:59 Daddy Exp $
+# $Id: Makefile.PL,v 1.30 2008/03/02 18:19:34 Daddy Exp $
 
 use inc::Module::Install;
 use strict;
@@ -18,10 +18,6 @@ build_requires('Data::Dumper');
 requires('Data::Dumper');
 build_requires('Date::Manip');
 requires('Date::Manip');
-# Email:: modules are only needed for Ebay::Email
-recommends('Email::Send');
-recommends('Email::Send::Env');
-recommends('Email::Simple');
 requires('File::Glob');
 requires('File::Spec');
 requires('HTML::Form');
@@ -29,7 +25,7 @@ requires('HTML::Parser' => 3);
 requires('HTML::TreeBuilder');
 requires('HTTP::Cookies');
 requires('HTTP::Request::Common');
-build_requires('IO::Capture::ErrorMessages');
+build_requires('IO::Capture::Stderr');
 requires('LWP::Simple');
 requires('LWP::UserAgent');
 build_requires('Test::Inline');
@@ -47,7 +43,7 @@ requires('WWW::Search::Ebay' => 2.181);
 # functions:
 build_requires('WWW::Search::Test' => 2.265);
 
-&WriteAll;
+WriteAll();
 
 my @asNeeded;
 foreach my $s (qw( EBAY_USERID EBAY_PASSWORD ))

@@ -1,12 +1,12 @@
 
-# $Id: status.t,v 1.5 2006/01/08 03:26:35 Daddy Exp $
+# $Id: status.t,v 1.6 2007/07/26 22:04:32 Daddy Exp $
 
 use ExtUtils::testlib;
 
 use Test::More no_plan;
 
-use IO::Capture::ErrorMessages;
-my $oICE =  IO::Capture::ErrorMessages->new;
+use IO::Capture::Stderr;
+my $oICE =  IO::Capture::Stderr->new;
 
 use vars qw( $sMod );
 BEGIN

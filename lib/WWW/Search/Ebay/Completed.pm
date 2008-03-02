@@ -1,5 +1,5 @@
 
-# $Id: Completed.pm,v 1.22 2007/07/22 12:20:46 Daddy Exp $
+# $Id: Completed.pm,v 1.25 2008/03/02 18:16:27 Daddy Exp $
 
 =head1 NAME
 
@@ -35,27 +35,7 @@ The query is applied to TITLES only.
 
 See the NOTES section of L<WWW::Search::Ebay> for a description of the results.
 
-=head1 SEE ALSO
-
-To make new back-ends, see L<WWW::Search>.
-
-=head1 CAVEATS
-
-=head1 BUGS
-
-Please tell the author if you find any!
-
-=head1 AUTHOR
-
-Thanks to Troy Arnold <C<troy at zenux.net>> for figuring out how to do this search.
-
-Maintained by Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.html>.
-
-=head1 LEGALESE
-
-THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
-WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+=head1 METHODS
 
 =cut
 
@@ -64,6 +44,7 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 package WWW::Search::Ebay::Completed;
 
 use strict;
+use warnings;
 
 use Carp;
 use Date::Manip;
@@ -74,13 +55,18 @@ use WWW::Ebay::Session;
 use base 'WWW::Search::Ebay';
 
 our
-$VERSION = do { my @r = (q$Revision: 1.22 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.25 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 my $MAINTAINER = 'Martin Thurn <mthurn@cpan.org>';
 
 use constant DEBUG_FUNC => 0;
 
-# private
+=head2 native_setup_search (private)
+
+This method does the heavy-lifting after native_query() is called.
+
+=cut
+
 sub native_setup_search
   {
   my ($self, $native_query, $rhOptsArg) = @_;
@@ -94,6 +80,14 @@ sub native_setup_search
   $rhOptsArg->{'soitemstatus'} = 2;
   return $self->SUPER::native_setup_search($native_query, $rhOptsArg);
   } # native_setup_search
+
+=head2 login
+
+Takes two string arguments,
+the eBay userid and the eBay password.
+(See WWW::Search for more information.)
+
+=cut
 
 sub login
   {
@@ -118,6 +112,13 @@ sub login
   return 1;
   } # login
 
+=head2 http_request
+
+This method does the heavy-lifting of fetching encrypted pages from ebay.com.
+(See WWW::Search for more information.)
+
+=cut
+
 sub http_request
   {
   my $self = shift;
@@ -134,7 +135,7 @@ sub http_request
   return $oES->response;
   } # http_request
 
-sub preprocess_results_page_OFF
+sub _preprocess_results_page
   {
   my $self = shift;
   my $sPage = shift;
@@ -151,12 +152,26 @@ sub _title_td_specs
          );
   } # _title_td_specs
 
+=head2 columns
+
+Defines the order of columns in the HTML table of search results.
+(See WWW::Search::Ebay for more information.)
+
+=cut
+
 sub columns
   {
   my $self = shift;
   # This is for basic USA eBay:
   return qw( bids price shipping enddate );
   } # columns
+
+=head2 parse_enddate
+
+Defines how to parse the auction ending date from the HTML.
+(See WWW::Search::Ebay for more information.)
+
+=cut
 
 sub parse_enddate
   {
@@ -179,6 +194,30 @@ sub parse_enddate
   } # parse_enddate
 
 1;
+
+=head1 SEE ALSO
+
+To make new back-ends, see L<WWW::Search>.
+
+=head1 CAVEATS
+
+=head1 BUGS
+
+Please tell the author if you find any!
+
+=head1 AUTHOR
+
+Thanks to Troy Arnold <C<troy at zenux.net>> for figuring out how to do this search.
+
+Maintained by Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.html>.
+
+=head1 LEGALESE
+
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+
+=cut
 
 __END__
 

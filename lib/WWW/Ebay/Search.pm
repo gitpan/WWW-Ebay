@@ -1,9 +1,10 @@
 
-# $rcs = ' $Id: Search.pm,v 1.7 2007/07/22 12:20:35 Daddy Exp $ ' ;
+# $rcs = ' $Id: Search.pm,v 1.8 2008/03/02 18:16:27 Daddy Exp $ ' ;
 
 package WWW::Ebay::Search;
 
 use strict;
+use warnings;
 
 use WWW::Search::Ebay;
 
