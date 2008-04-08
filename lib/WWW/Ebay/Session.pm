@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Session.pm,v 1.55 2008/03/02 18:16:27 Daddy Exp $ ' ;
+# $rcs = ' $Id: Session.pm,v 1.56 2008/04/06 03:35:48 Martin Exp $ ' ;
 
 =head1 COPYRIGHT
 
@@ -48,7 +48,7 @@ use LWP::Simple;
 use LWP::UserAgent;
 use WWW::Ebay::Listing;
 use WWW::Search;
-# We need the version whose parse_enddate() takes a string as arg2:
+# We need the version whose _parse_enddate() takes a string as arg2:
 use WWW::Search::Ebay 2.181;
 # We need the version that has the shipping() method:
 use WWW::SearchResult 2.070;
@@ -506,7 +506,7 @@ sub watchlist_auctions
       elsif ($sClass =~ m!timeleft!i)
         {
         my $oWSE = new WWW::Search('Ebay') or next COUSIN_TD_TAG;
-        $oWSE->parse_enddate($oTD->as_text, $oWSR);
+        $oWSE->_parse_enddate($oTD->as_text, $oWSR);
         _debug " DDD       has an enddate TD...\n" if DEBUG_WATCH;
         }
       } # foreach COUSIN_TD_TAG

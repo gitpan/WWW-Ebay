@@ -1,5 +1,5 @@
 
-# $Id: status.t,v 1.6 2007/07/26 22:04:32 Daddy Exp $
+# $Id: status.t,v 1.7 2008/04/05 17:54:53 Martin Exp $
 
 use ExtUtils::testlib;
 
@@ -111,6 +111,56 @@ like($s, qr/congratulated/);
 like($s, qr/paid/);
 like($s, qr/shipped/);
 unlike($s, qr/feedback/);
+
+# The rest of this file used to be in the module itself (and tested via Test::Inline):
+
+my $oStatus = new WWW::Ebay::Status;
+ok(ref $oStatus);
+# Get ready to test all the fields:
+my @asField = qw( listed ended congratulated paid payment_cleared shipped received left_feedback got_feedback archived );
+my @asOn = qw( on -1 1 99 yes ok positive ON YES );
+# Make sure all fields are zero to start with:
+foreach my $s (@asField)
+  {
+  is($oStatus->$s, 0);
+  } # foreach
+# Now turn them all on...
+foreach my $s (@asField)
+  {
+  $oStatus->$s($asOn[int(rand(scalar(@asOn)))]);
+  } # foreach
+# ...And make sure they stayed on:
+foreach my $s (@asField)
+  {
+  ok($oStatus->$s);
+  } # foreach
+# Set a few bits:
+my @asTestOff = qw( listed congratulated payment_cleared received left_feedback got_feedback archived );
+my @asTestOn = qw( ended paid shipped );
+foreach my $s (@asTestOn)
+  {
+  $oStatus->$s(1);
+  is($oStatus->$s, 1);
+  } # foreach
+foreach my $s (@asTestOff)
+  {
+  $oStatus->$s(0);
+  is($oStatus->$s, 0);
+  } # foreach
+# Freeze it..
+my $i = $oStatus->as_integer;
+# ...And thaw it again:
+my $oNew = $oStatus->new_from_integer($i);
+# Make sure exactly the same fields are set:
+foreach my $s (@asTestOn)
+  {
+  is($oNew->$s, 1);
+  } # foreach
+foreach my $s (@asTestOff)
+  {
+  is($oNew->$s, 0);
+  } # foreach
+
 
 __END__
 

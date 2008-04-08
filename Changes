@@ -1,3 +1,7 @@
+2008-04-06    <Martin@BLUEMAX>
+
+	* removed the Mature search backend
+
 2007-07-22    <Daddy@C-3PO>
 
 	* lib/WWW/Ebay/Session.pm (selling_auctions): fix parser for new page format

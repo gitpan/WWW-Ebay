@@ -1,5 +1,5 @@
 
-# $Id: Completed.pm,v 1.25 2008/03/02 18:16:27 Daddy Exp $
+# $Id: Completed.pm,v 1.28 2008/04/06 03:36:20 Martin Exp $
 
 =head1 NAME
 
@@ -48,38 +48,33 @@ use warnings;
 
 use Carp;
 use Date::Manip;
-# We need the version that was modified to be able to parse completed
-# auction search results:
-use WWW::Search::Ebay 2.180;
+# We need the version that was fixed to be able to parse completed
+# item search results:
+use WWW::Search::Ebay 2.217;
 use WWW::Ebay::Session;
 use base 'WWW::Search::Ebay';
 
 our
-$VERSION = do { my @r = (q$Revision: 1.25 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.28 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 my $MAINTAINER = 'Martin Thurn <mthurn@cpan.org>';
 
 use constant DEBUG_FUNC => 0;
 
-=head2 native_setup_search (private)
-
-This method does the heavy-lifting after native_query() is called.
-
-=cut
-
-sub native_setup_search
+sub _native_setup_search
   {
   my ($self, $native_query, $rhOptsArg) = @_;
   $rhOptsArg ||= {};
   unless (ref($rhOptsArg) eq 'HASH')
     {
-    carp " --- second argument to native_setup_search should be hashref, not arrayref";
+    carp " --- second argument to _native_setup_search should be hashref, not arrayref";
     return undef;
     } # unless
+  # http://search-completed.ebay.com/search/search.dll?sofocus=so&sbrftog=1&fcl=3&frpp=50&ftid=2&fcd=2&fccl=0&satitle=shmi&sacat=-1%26catref%3DC6&sargn=-1%26saslc%3D2&sadis=200&fpos=ZIP%2FPostal&sabfmts=1&saobfmts=insif&fis=2&ftrt=1&ftrv=1&saprclo=&saprchi=&fsop=32%26fsoo%3D2
   $self->{'search_host'} = 'http://search-completed.ebay.com';
   $rhOptsArg->{'soitemstatus'} = 2;
-  return $self->SUPER::native_setup_search($native_query, $rhOptsArg);
-  } # native_setup_search
+  return $self->SUPER::_native_setup_search($native_query, $rhOptsArg);
+  } # _native_setup_search
 
 =head2 login
 
@@ -93,12 +88,12 @@ sub login
   {
   my $self = shift;
   my ($sUserID, $sPassword) = @_;
-  DEBUG_FUNC && print STDERR " + Ebay::Completed::login($sUserID)\n";
   if (ref $self->{__ebay__session__})
     {
-    DEBUG_FUNC && print STDERR " +   already called.\n";
+    DEBUG_FUNC && print STDERR " +   login() was already called.\n";
     return 1;
     } # if
+  DEBUG_FUNC && print STDERR " + Ebay::Completed::login($sUserID)\n";
   # Make sure we keep the cookie(s) from ebay.com:
   my $oJar = new HTTP::Cookies;
   $self->cookie_jar($oJar);
@@ -144,14 +139,6 @@ sub _preprocess_results_page
   exit 88;
   } # preprocess_results_page
 
-sub _title_td_specs
-  {
-  return (
-          '_tag' => 'td',
-          'class' => 'ebUpper ebcTtl',
-         );
-  } # _title_td_specs
-
 =head2 columns
 
 Defines the order of columns in the HTML table of search results.
@@ -159,21 +146,30 @@ Defines the order of columns in the HTML table of search results.
 
 =cut
 
-sub columns
+sub _columns
   {
   my $self = shift;
   # This is for basic USA eBay:
   return qw( bids price shipping enddate );
-  } # columns
+  } # _columns
 
-=head2 parse_enddate
+sub _title_element_specs
+  {
+  return (
+          '_tag' => 'td',
+          'class' => 'ebUpper ebcTtl',
+         );
+  } # _title_element_specs
+
+
+=head2 _parse_enddate
 
 Defines how to parse the auction ending date from the HTML.
 (See WWW::Search::Ebay for more information.)
 
 =cut
 
-sub parse_enddate
+sub _parse_enddate
   {
   my $self = shift;
   my $oTDdate = shift;
@@ -184,6 +180,9 @@ sub parse_enddate
     }
   my $s = $oTDdate->as_text;
   print STDERR " DDD   TDdate ===$s===\n" if 1 < $self->{_debug};
+  # I don't know why there are sometimes weird characters in there:
+  $s =~ s!&Acirc;!!g;
+  $s =~ s!Â!!g;
   # Convert nbsp to regular space:
   $s =~ s!\240!\040!g;
   my $date = &ParseDate($s);
@@ -191,7 +190,7 @@ sub parse_enddate
   my $sDate = $self->_format_date($date);
   $hit->end_date($sDate);
   return 1;
-  } # parse_enddate
+  } # _parse_enddate
 
 1;
 

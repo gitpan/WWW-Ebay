@@ -1,6 +1,6 @@
 # -*- cperl -*-
 
-# $Id: WWW-Search-Ebay-Completed.t,v 1.9 2007/04/07 20:36:33 Daddy Exp $
+# $Id: WWW-Search-Ebay-Completed.t,v 1.11 2008/04/06 03:34:54 Martin Exp $
 
 # use LWP::Debug qw( + -conns );
 
@@ -57,14 +57,17 @@ PROMPT
   # goto TEST_NOW;
 
   # This test returns no results (but we should not get an HTTP error):
+  diag("sending zero-page query...");
   $iDebug = 0;
   &tm_run_test('normal', $WWW::Search::Test::bogus_query, 0, 0, $iDebug);
+  diag("sending multi-page query...");
   $iDebug = 0;
   $iDump = 0;
   &tm_run_test('normal', 'lego', 101, undef, $iDebug, $iDump);
  TEST_NOW:
+  diag("sending one-page query...");
   $iDebug = 0;
-  $iDump = 1;
+  $iDump = 0;
   &tm_run_test('normal', 'shmi', 1, 99, $iDebug, $iDump);
   # Now get the results and inspect them:
   my @ao = $WWW::Search::Test::oSearch->results();

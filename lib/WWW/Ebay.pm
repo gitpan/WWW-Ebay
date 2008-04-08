@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Ebay.pm,v 1.20 2008/03/02 18:16:25 Daddy Exp $ ' ;
+# $rcs = ' $Id: Ebay.pm,v 1.22 2008/04/08 02:44:25 Martin Exp $ ' ;
 
 =head1 NAME
 
@@ -22,8 +22,7 @@ L<WWW::Ebay::Search|WWW::Ebay::Search>,
 L<WWW::Ebay::Session|WWW::Ebay::Session>,
 L<WWW::Ebay::Status|WWW::Ebay::Status>,
 L<WWW::Search::Ebay|WWW::Search::Ebay>,
-L<WWW::Search::Ebay::Completed|WWW::Search::Ebay::Completed>,
-L<WWW::Search::Ebay::Mature|WWW::Search::Ebay::Mature>
+L<WWW::Search::Ebay::Completed|WWW::Search::Ebay::Completed>
 
 =head1 AUTHOR
 
@@ -37,7 +36,7 @@ use strict;
 use warnings;
 
 our
-$VERSION = '0.083';
+$VERSION = '0.085';
 
 1;
 

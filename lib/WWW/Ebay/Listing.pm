@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Listing.pm,v 1.9 2008/03/02 18:16:27 Daddy Exp $ ' ;
+# $rcs = ' $Id: Listing.pm,v 1.10 2008/04/05 17:54:42 Martin Exp $ ' ;
 
 =head1 COPYRIGHT
 
@@ -12,15 +12,8 @@ WWW/Ebay/Listing.pm
 
 =head1 SYNOPSIS
 
-=begin example
-
   use WWW::Ebay::Listing;
   my $oWEL = new WWW::Ebay::Listing;
-
-=end example
-
-=for example_testing
-ok(ref $oWEL);
 
 =head1 DESCRIPTION
 
@@ -35,7 +28,7 @@ use strict;
 use warnings;
 
 our
-$VERSION = do { my @r = (q$Revision: 1.9 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.10 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 use Carp;
 use WWW::Ebay::Status;
@@ -237,16 +230,6 @@ sub ended
   } # ended
 
 =back
-
-=head1 NOTES
-
-=head1 CAVEATS
-
-=head1 DIAGNOSTICS
-
-=head1 BUGS
-
-=head1 RESTRICTIONS
 
 =head1 AUTHOR
 

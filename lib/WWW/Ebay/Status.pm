@@ -1,6 +1,10 @@
-#!/usr/local/bin/perl -w
 
-# $rcs = ' $Id: Status.pm,v 1.15 2008/03/02 18:16:27 Daddy Exp $ ' ;
+# $rcs = ' $Id: Status.pm,v 1.16 2008/04/05 17:53:21 Martin Exp $ ' ;
+
+package WWW::Ebay::Status;
+
+use strict;
+use warnings;
 
 =head1 NAME
 
@@ -8,64 +12,8 @@ WWW::Ebay::Status -- encapsulate auction status
 
 =head1 SYNOPSIS
 
-=begin example
-
   use WWW::Ebay::Status;
   my $oStatus = new WWW::Ebay::Status;
-
-=end example
-
-=begin testing
-
-use WWW::Ebay::Status;
-my $oStatus = new WWW::Ebay::Status;
-ok(ref $oStatus);
-# Get ready to test all the fields:
-my @asField = qw( listed ended congratulated paid payment_cleared shipped received left_feedback got_feedback archived );
-my @asOn = qw( on -1 1 99 yes ok positive ON YES );
-# Make sure all fields are zero to start with:
-foreach my $s (@asField)
-  {
-  is($oStatus->$s, 0);
-  } # foreach
-# Now turn them all on...
-foreach my $s (@asField)
-  {
-  $oStatus->$s($asOn[int(rand(scalar(@asOn)))]);
-  } # foreach
-# ...And make sure they stayed on:
-foreach my $s (@asField)
-  {
-  ok($oStatus->$s);
-  } # foreach
-# Set a few bits:
-my @asTestOff = qw( listed congratulated payment_cleared received left_feedback got_feedback archived );
-my @asTestOn = qw( ended paid shipped );
-foreach my $s (@asTestOn)
-  {
-  $oStatus->$s(1);
-  is($oStatus->$s, 1);
-  } # foreach
-foreach my $s (@asTestOff)
-  {
-  $oStatus->$s(0);
-  is($oStatus->$s, 0);
-  } # foreach
-# Freeze it..
-my $i = $oStatus->as_integer;
-# ...And thaw it again:
-my $oNew = $oStatus->new_from_integer($i);
-# Make sure exactly the same fields are set:
-foreach my $s (@asTestOn)
-  {
-  is($oNew->$s, 1);
-  } # foreach
-foreach my $s (@asTestOff)
-  {
-  is($oNew->$s, 0);
-  } # foreach
-
-=end testing
 
 =head1 DESCRIPTION
 
@@ -86,13 +34,8 @@ Please tell the author if you find any.
 
 =cut
 
-package WWW::Ebay::Status;
-
-use strict;
-use warnings;
-
 my
-$VERSION = do { my @r = (q$Revision: 1.15 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.16 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 # We use a bitvector for simplicity, even though many of the states
 # are mutually exclusive.
