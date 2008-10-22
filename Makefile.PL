@@ -1,22 +1,18 @@
 
-# $Id: Makefile.PL,v 1.33 2008/04/06 03:57:28 Martin Exp $
+# $Id: Makefile.PL,v 1.34 2008/10/22 02:59:07 Martin Exp $
 
 use inc::Module::Install;
 use strict;
 
-name('WWW-Ebay');
-version_from('lib/WWW/Ebay.pm');
-author('Martin Thurn <mthurn@cpan.org>');
-abstract('Search and manage eBay auctions');
-license('perl');
+all_from('lib/WWW/Ebay.pm');
 
-build_requires('Bit::Vector' => 0);
+test_requires('Bit::Vector' => 0);
 requires('Bit::Vector');
 requires('Carp');
 requires('Crypt::SSLeay');
-build_requires('Data::Dumper');
+test_requires('Data::Dumper');
 requires('Data::Dumper');
-build_requires('Date::Manip');
+test_requires('Date::Manip');
 requires('Date::Manip');
 requires('File::Glob');
 requires('File::Spec');
@@ -25,10 +21,10 @@ requires('HTML::Parser' => 3);
 requires('HTML::TreeBuilder');
 requires('HTTP::Cookies');
 requires('HTTP::Request::Common');
-build_requires('IO::Capture::Stderr');
+test_requires('IO::Capture::Stderr');
 requires('LWP::Simple');
 requires('LWP::UserAgent');
-build_requires('Test::More');
+test_requires('Test::More');
 # Tk is only needed for Email::editor()
 recommends('Tk' => 800);
 requires('URI');
@@ -37,10 +33,10 @@ requires('WWW::Search' => 2.525);
 # We need the version that has the shipping() method:
 requires('WWW::SearchResult' => 2.070);
 # We need the version which was fixed to handle completed auctions:
-requires('WWW::Search::Ebay' => 2.218);
+requires('WWW::Search::Ebay' => 2.231);
 # We need the version of WWW::Search::Test that exports its tm_
 # functions:
-build_requires('WWW::Search::Test' => 2.265);
+test_requires('WWW::Search::Test' => 2.265);
 
 WriteAll();
 

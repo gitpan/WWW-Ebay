@@ -1,5 +1,5 @@
 
-# $Id: Completed.pm,v 1.28 2008/04/06 03:36:20 Martin Exp $
+# $Id: Completed.pm,v 1.29 2008/10/22 03:10:30 Martin Exp $
 
 =head1 NAME
 
@@ -55,7 +55,7 @@ use WWW::Ebay::Session;
 use base 'WWW::Search::Ebay';
 
 our
-$VERSION = do { my @r = (q$Revision: 1.28 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.29 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 my $MAINTAINER = 'Martin Thurn <mthurn@cpan.org>';
 
@@ -70,9 +70,18 @@ sub _native_setup_search
     carp " --- second argument to _native_setup_search should be hashref, not arrayref";
     return undef;
     } # unless
-  # http://search-completed.ebay.com/search/search.dll?sofocus=so&sbrftog=1&fcl=3&frpp=50&ftid=2&fcd=2&fccl=0&satitle=shmi&sacat=-1%26catref%3DC6&sargn=-1%26saslc%3D2&sadis=200&fpos=ZIP%2FPostal&sabfmts=1&saobfmts=insif&fis=2&ftrt=1&ftrv=1&saprclo=&saprchi=&fsop=32%26fsoo%3D2
-  $self->{'search_host'} = 'http://search-completed.ebay.com';
-  $rhOptsArg->{'soitemstatus'} = 2;
+  # As of Summer 2008:
+  # http://completed.shop.ebay.com/items/_W0QQLHQ5fCompleteZ1?_nkw=keychain+ahsoka&_sacat=0&_fromfsb=&_trksid=m270.l1313&_odkw=lego+ahsoka&_osacat=0
+  $self->{'search_host'} = 'http://completed.shop.ebay.com';
+  $self->{search_path} = q{/items/_W0QQLHQ5fCompleteZ1};
+  $self->{_options} = {
+                       _nkw => $native_query,
+                       # __sacat => 0,
+                       # __fromfsb => '',
+                       # __trksid => 'm270.l1313',
+                       # __odkw => $native_query,
+                       # __osacat => 0,
+                      };
   return $self->SUPER::_native_setup_search($native_query, $rhOptsArg);
   } # _native_setup_search
 
@@ -139,18 +148,11 @@ sub _preprocess_results_page
   exit 88;
   } # preprocess_results_page
 
-=head2 columns
-
-Defines the order of columns in the HTML table of search results.
-(See WWW::Search::Ebay for more information.)
-
-=cut
-
 sub _columns
   {
   my $self = shift;
   # This is for basic USA eBay:
-  return qw( bids price shipping enddate );
+  return qw( paypal bids price shipping enddate );
   } # _columns
 
 sub _title_element_specs

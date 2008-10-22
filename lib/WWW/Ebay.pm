@@ -1,9 +1,9 @@
 
-# $rcs = ' $Id: Ebay.pm,v 1.22 2008/04/08 02:44:25 Martin Exp $ ' ;
+# $rcs = ' $Id: Ebay.pm,v 1.25 2008/10/22 02:58:25 Martin Exp $ ' ;
 
 =head1 NAME
 
-WWW::Ebay
+WWW::Ebay - Search and manage eBay auctions
 
 =head1 DESCRIPTION
 
@@ -28,6 +28,10 @@ L<WWW::Search::Ebay::Completed|WWW::Search::Ebay::Completed>
 
 Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.html>.
 
+=head1 LICENSE
+
+This software is released under the same license as Perl itself.
+
 =cut
 
 package WWW::Ebay;
@@ -36,7 +40,7 @@ use strict;
 use warnings;
 
 our
-$VERSION = '0.085';
+$VERSION = '0.086';
 
 1;
 
