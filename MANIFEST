@@ -1,5 +1,4 @@
 Changes
-completed-failed.html
 inc/Module/Install.pm
 inc/Module/Install/Base.pm
 inc/Module/Install/Can.pm
@@ -22,6 +21,7 @@ MANIFEST			This list of files
 META.yml
 README
 t/bybidderid.t
+t/completed.t
 t/customer.t
 t/listing.t
 t/pod-coverage.t
@@ -29,4 +29,3 @@ t/pod.t
 t/session.t
 t/status.t
 t/watchlist.t
-t/WWW-Search-Ebay-Completed.t

@@ -34,8 +34,7 @@ requires('WWW::Search' => 2.525);
 requires('WWW::SearchResult' => 2.070);
 # We need the version which was fixed to handle completed auctions:
 requires('WWW::Search::Ebay' => 2.231);
-# We need the version of WWW::Search::Test that exports its tm_
-# functions:
+# We need the version that exports its tm_ functions:
 test_requires('WWW::Search::Test' => 2.265);
 
 WriteAll();

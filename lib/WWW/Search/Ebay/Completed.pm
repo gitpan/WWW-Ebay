@@ -76,6 +76,7 @@ sub _native_setup_search
   $self->{search_path} = q{/items/_W0QQLHQ5fCompleteZ1};
   $self->{_options} = {
                        _nkw => $native_query,
+                       _ipg => 200,
                        # __sacat => 0,
                        # __fromfsb => '',
                        # __trksid => 'm270.l1313',
