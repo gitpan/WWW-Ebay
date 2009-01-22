@@ -1,5 +1,5 @@
 
-# $Id: Completed.pm,v 1.29 2008/10/22 03:10:30 Martin Exp $
+# $Id: Completed.pm,v 1.31 2009/01/22 03:39:57 Martin Exp $
 
 =head1 NAME
 
@@ -55,7 +55,7 @@ use WWW::Ebay::Session;
 use base 'WWW::Search::Ebay';
 
 our
-$VERSION = do { my @r = (q$Revision: 1.29 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.31 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 my $MAINTAINER = 'Martin Thurn <mthurn@cpan.org>';
 
@@ -72,19 +72,15 @@ sub _native_setup_search
     } # unless
   # As of Summer 2008:
   # http://completed.shop.ebay.com/items/_W0QQLHQ5fCompleteZ1?_nkw=keychain+ahsoka&_sacat=0&_fromfsb=&_trksid=m270.l1313&_odkw=lego+ahsoka&_osacat=0
-  $self->{'search_host'} = 'http://completed.shop.ebay.com';
-  $self->{search_path} = q{/items/_W0QQLHQ5fCompleteZ1};
-  $self->{_options} = {
-                       _nkw => $native_query,
-                       _ipg => 200,
-                       # __sacat => 0,
-                       # __fromfsb => '',
-                       # __trksid => 'm270.l1313',
-                       # __odkw => $native_query,
-                       # __osacat => 0,
-                      };
+  $self->{'search_host'} ||= 'http://completed.shop.ebay.com';
+  $self->{search_path} ||= q{/items/_W0QQLHQ5fCompleteZ1};
+  $self->{_options} ||= {
+                         _nkw => $native_query,
+                         _ipg => 200,
+                        };
   return $self->SUPER::_native_setup_search($native_query, $rhOptsArg);
   } # _native_setup_search
+
 
 =head2 login
 
@@ -116,6 +112,7 @@ sub login
   $self->{__ebay__session__} = $oES;
   return 1;
   } # login
+
 
 =head2 http_request
 

@@ -1,5 +1,5 @@
 
-# $Id: Makefile.PL,v 1.34 2008/10/22 02:59:07 Martin Exp $
+# $Id: Makefile.PL,v 1.35 2009/01/13 01:22:47 Martin Exp $
 
 use inc::Module::Install;
 use strict;

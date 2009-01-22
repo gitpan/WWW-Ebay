@@ -1,26 +1,22 @@
-# -*- cperl -*-
 
-# $Id: completed.t,v 1.5 2009/01/13 01:22:28 Martin Exp $
+# $Id: completed_category.t,v 1.1 2009/01/22 03:47:30 Martin Exp $
 
-# use LWP::Debug qw( + -conns );
-
+use blib;
 use Bit::Vector;
 use Data::Dumper;
 use Date::Manip;
-use ExtUtils::testlib;
 use Test::More no_plan;
 
 use WWW::Search::Test;
 BEGIN
   {
-  use_ok('WWW::Search::Ebay::Completed');
+  use_ok('WWW::Search::Ebay::Completed::Category');
   }
 
 my $iDebug = 0;
 my $iDump = 0;
 
-$iDebug = 0;
-tm_new_engine('Ebay::Completed');
+tm_new_engine('Ebay::Completed::Category');
 SKIP:
   {
   # See if ebay userid is in environment variable:
@@ -54,22 +50,30 @@ PROMPT
                                                    ($sPassword eq ''));
   diag("log in as $sUserID...");
   ok($WWW::Search::Test::oSearch->login($sUserID, $sPassword), 'logged in');
-  # goto TEST_NOW;
+  # goto DEBUG_NOW;
 
   # This test returns no results (but we should not get an HTTP error):
   diag("sending zero-page query...");
   $iDebug = 0;
   tm_run_test('normal', $WWW::Search::Test::bogus_query, 0, 0, $iDebug);
-  diag("sending multi-page query...");
-  $iDebug = 0;
-  $iDump = 0;
-  tm_run_test('normal', 'lego', 101, undef, $iDebug, $iDump);
+ MULTI_PAGE:
+    {
+    $TODO = q{can not follow ebay's next-page link};
+    diag("sending multi-page query...");
+    $iDebug = 0;
+    $iDump = 0;
+    # Disney pins, hundreds of pages of results
+    tm_run_test('normal', '38004', 444, undef, $iDebug, $iDump);
+    $TODO = q{};
+    } # end of MULTI_PAGE block
 
+ DEBUG_NOW:
+  pass;
   diag("sending one-page query...");
   $iDebug = 0;
   $iDump = 0;
-  $WWW::Search::Test::sSaveOnError = q{completed-failed.html};
-  tm_run_test('normal', 'ahsoka keychain', 1, 99, $iDebug, $iDump);
+  $WWW::Search::Test::sSaveOnError = q{completed_category-failed.html};
+  tm_run_test('normal', '35845', 1, 199, $iDebug, $iDump);
   # Now get the results and inspect them:
   my @ao = $WWW::Search::Test::oSearch->results();
   cmp_ok(0, '<', scalar(@ao), 'got some results');
@@ -118,19 +122,6 @@ PROMPT
       diag(Dumper($sVal));
       } # while
     } # if any failures
- TEST_NOW:
-  diag("sending one-page query against a particular category...");
-  # An additional test for user reports that 1) query gets cut off at
-  # space and 2) query restriction by category does not work.
-  $WWW::Search::Test::oSearch->reset_search;
-  $WWW::Search::Test::oSearch->native_query('Ahsoka+Tano',
-                                              {
-                                               _sacat => 18991,
-                                               # search_debug => 1,
-                                              }
-                                   );
-  my @aoResult = $WWW::Search::Test::oSearch->results;
-  cmp_ok(scalar(@aoResult), '<', 99);
   } # SKIP
 
 exit 0;

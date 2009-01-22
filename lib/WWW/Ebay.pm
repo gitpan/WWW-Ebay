@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Ebay.pm,v 1.26 2009/01/10 14:43:17 Martin Exp $ ' ;
+# $rcs = ' $Id: Ebay.pm,v 1.27 2009/01/22 03:43:51 Martin Exp $ ' ;
 
 =head1 NAME
 
@@ -19,10 +19,11 @@ It is also used to control the version number of the distribution.
 L<WWW::Ebay::Customer|WWW::Ebay::Customer>,
 L<WWW::Ebay::Listing|WWW::Ebay::Listing>,
 L<WWW::Ebay::Search|WWW::Ebay::Search>,
-L<WWW::Ebay::Session|WWW::Ebay::Session>,
-L<WWW::Ebay::Status|WWW::Ebay::Status>,
-L<WWW::Search::Ebay|WWW::Search::Ebay>,
-L<WWW::Search::Ebay::Completed|WWW::Search::Ebay::Completed>
+L<WWW::Ebay::Session>,
+L<WWW::Ebay::Status>,
+L<WWW::Search::Ebay>,
+L<WWW::Search::Ebay::Completed>
+L<WWW::Search::Ebay::Completed::Category>
 
 =head1 AUTHOR
 
@@ -40,7 +41,7 @@ use strict;
 use warnings;
 
 our
-$VERSION = '0.087';
+$VERSION = '0.088';
 
 1;
 
