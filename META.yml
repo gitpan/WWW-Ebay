@@ -6,11 +6,14 @@ build_requires:
   Bit::Vector: 0
   Data::Dumper: 0
   Date::Manip: 0
+  ExtUtils::MakeMaker: 6.42
   IO::Capture::Stderr: 0
   Test::More: 0
   WWW::Search::Test: 2.265
+configure_requires:
+  ExtUtils::MakeMaker: 6.42
 distribution_type: module
-generated_by: 'Module::Install version 0.77'
+generated_by: 'Module::Install version 0.91'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -44,4 +47,4 @@ requires:
   WWW::SearchResult: 2.07
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.088
+version: 0.089

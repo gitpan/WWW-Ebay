@@ -1,6 +1,6 @@
 # -*- cperl -*-
 
-# $Id: completed.t,v 1.5 2009/01/13 01:22:28 Martin Exp $
+# $Id: completed.t,v 1.6 2009-08-11 01:47:06 Martin Exp $
 
 # use LWP::Debug qw( + -conns );
 
@@ -9,6 +9,8 @@ use Data::Dumper;
 use Date::Manip;
 use ExtUtils::testlib;
 use Test::More no_plan;
+
+use constant DEBUG_ONE => 0;
 
 use WWW::Search::Test;
 BEGIN
@@ -54,7 +56,7 @@ PROMPT
                                                    ($sPassword eq ''));
   diag("log in as $sUserID...");
   ok($WWW::Search::Test::oSearch->login($sUserID, $sPassword), 'logged in');
-  # goto TEST_NOW;
+  DEBUG_ONE && goto TEST_ONE;
 
   # This test returns no results (but we should not get an HTTP error):
   diag("sending zero-page query...");
@@ -65,11 +67,14 @@ PROMPT
   $iDump = 0;
   tm_run_test('normal', 'lego', 101, undef, $iDebug, $iDump);
 
+ TEST_ONE:
   diag("sending one-page query...");
   $iDebug = 0;
   $iDump = 0;
   $WWW::Search::Test::sSaveOnError = q{completed-failed.html};
-  tm_run_test('normal', 'ahsoka keychain', 1, 99, $iDebug, $iDump);
+  my $sQuery = q{ahsoka keychain};
+  $sQuery = q{ignition oop cd};
+  tm_run_test('normal', $sQuery, 1, 99, $iDebug, $iDump);
   # Now get the results and inspect them:
   my @ao = $WWW::Search::Test::oSearch->results();
   cmp_ok(0, '<', scalar(@ao), 'got some results');
@@ -118,7 +123,8 @@ PROMPT
       diag(Dumper($sVal));
       } # while
     } # if any failures
- TEST_NOW:
+  DEBUG_ONE && goto ALL_DONE;
+
   diag("sending one-page query against a particular category...");
   # An additional test for user reports that 1) query gets cut off at
   # space and 2) query restriction by category does not work.
@@ -133,6 +139,8 @@ PROMPT
   cmp_ok(scalar(@aoResult), '<', 99);
   } # SKIP
 
+ALL_DONE:
+pass('all done');
 exit 0;
 
 __END__
