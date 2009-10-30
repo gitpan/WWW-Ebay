@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Session.pm,v 1.56 2008/04/06 03:35:48 Martin Exp $ ' ;
+# $rcs = ' $Id: Session.pm,v 1.57 2009-10-30 03:12:59 Martin Exp $ ' ;
 
 =head1 COPYRIGHT
 
@@ -240,9 +240,8 @@ sub fetch_any_ebay_page
       } # if
     return '';
     } # unless
-  $sRes = $self->response->headers_as_string;
   $sPage = $self->response->content;
-  if ($sPage =~ m!"PageSignIn"!)
+  if ($sPage =~ m!"SignInForm"!)
     {
     # We need to sign-in before we get to see the requested page:
     my $fname1 = "Pages/$sName-signin.html";

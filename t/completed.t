@@ -1,6 +1,6 @@
 # -*- cperl -*-
 
-# $Id: completed.t,v 1.6 2009-08-11 01:47:06 Martin Exp $
+# $Id: completed.t,v 1.7 2009-10-30 03:13:12 Martin Exp $
 
 # use LWP::Debug qw( + -conns );
 
@@ -73,7 +73,7 @@ PROMPT
   $iDump = 0;
   $WWW::Search::Test::sSaveOnError = q{completed-failed.html};
   my $sQuery = q{ahsoka keychain};
-  $sQuery = q{ignition oop cd};
+  $sQuery = q{tanya magazine};
   tm_run_test('normal', $sQuery, 1, 99, $iDebug, $iDump);
   # Now get the results and inspect them:
   my @ao = $WWW::Search::Test::oSearch->results();
