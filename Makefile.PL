@@ -1,5 +1,5 @@
 
-# $Id: Makefile.PL,v 1.35 2009/01/13 01:22:47 Martin Exp $
+# $Id: Makefile.PL,v 1.36 2010-02-14 21:48:38 Martin Exp $
 
 use inc::Module::Install;
 use strict;
@@ -32,8 +32,8 @@ requires('URI');
 requires('WWW::Search' => 2.525);
 # We need the version that has the shipping() method:
 requires('WWW::SearchResult' => 2.070);
-# We need the version which was fixed to handle completed auctions:
-requires('WWW::Search::Ebay' => 2.231);
+# We need the version that was fixed to look for "Free Shipping":
+requires('WWW::Search::Ebay' => 2.247);
 # We need the version that exports its tm_ functions:
 test_requires('WWW::Search::Test' => 2.265);
 

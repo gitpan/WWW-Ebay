@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Customer.pm,v 1.14 2008/03/02 18:16:26 Daddy Exp $ ' ;
+# $rcs = ' $Id: Customer.pm,v 1.15 2010-03-06 13:33:21 Martin Exp $ ' ;
 
 =head1 COPYRIGHT
 
@@ -40,7 +40,7 @@ use Carp;
 use Data::Dumper;  # for debugging only
 
 use vars qw( $AUTOLOAD $VERSION );
-$VERSION = do { my @r = (q$Revision: 1.14 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.15 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 use constant DEBUG_NEW => 0;
 
@@ -311,7 +311,7 @@ sub copy_to
 
 =head1 AUTHOR
 
-Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.html>.
+Martin 'Kingpin' Thurn, C<mthurn at cpan.org>, L<http://tinyurl.com/nn67z>.
 
 =cut
 

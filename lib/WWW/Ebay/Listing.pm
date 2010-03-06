@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Listing.pm,v 1.10 2008/04/05 17:54:42 Martin Exp $ ' ;
+# $rcs = ' $Id: Listing.pm,v 1.11 2010-03-06 13:33:21 Martin Exp $ ' ;
 
 =head1 COPYRIGHT
 
@@ -28,7 +28,7 @@ use strict;
 use warnings;
 
 our
-$VERSION = do { my @r = (q$Revision: 1.10 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.11 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 use Carp;
 use WWW::Ebay::Status;
@@ -233,7 +233,7 @@ sub ended
 
 =head1 AUTHOR
 
-Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.html>.
+Martin 'Kingpin' Thurn, C<mthurn at cpan.org>, L<http://tinyurl.com/nn67z>.
 
 =cut
 

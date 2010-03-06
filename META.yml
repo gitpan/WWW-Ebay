@@ -1,7 +1,7 @@
 ---
 abstract: 'Search and manage eBay auctions'
 author:
-  - 'Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.html>.'
+  - "Martin 'Kingpin' Thurn, C<mthurn at cpan.org>, L<http://tinyurl.com/nn67z>."
 build_requires:
   Bit::Vector: 0
   Data::Dumper: 0
@@ -43,8 +43,9 @@ requires:
   LWP::UserAgent: 0
   URI: 0
   WWW::Search: 2.525
-  WWW::Search::Ebay: 2.231
+  WWW::Search::Ebay: 2.247
   WWW::SearchResult: 2.07
+  perl: 5.005
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.091
+version: 0.093

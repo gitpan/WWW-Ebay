@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Status.pm,v 1.16 2008/04/05 17:53:21 Martin Exp $ ' ;
+# $rcs = ' $Id: Status.pm,v 1.17 2010-03-06 13:33:22 Martin Exp $ ' ;
 
 package WWW::Ebay::Status;
 
@@ -35,7 +35,7 @@ Please tell the author if you find any.
 =cut
 
 my
-$VERSION = do { my @r = (q$Revision: 1.16 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.17 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 # We use a bitvector for simplicity, even though many of the states
 # are mutually exclusive.
@@ -316,7 +316,7 @@ sub _getset
 
 =head1 AUTHOR
 
-Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.html>.
+Martin 'Kingpin' Thurn, C<mthurn at cpan.org>, L<http://tinyurl.com/nn67z>.
 
 =head1 COPYRIGHT
 

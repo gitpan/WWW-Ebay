@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Ebay.pm,v 1.29 2009-10-30 03:12:29 Martin Exp $ ' ;
+# $rcs = ' $Id: Ebay.pm,v 1.31 2010-03-06 13:33:36 Martin Exp $ ' ;
 
 =head1 NAME
 
@@ -27,7 +27,7 @@ L<WWW::Search::Ebay::Completed::Category>
 
 =head1 AUTHOR
 
-Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.html>.
+Martin 'Kingpin' Thurn, C<mthurn at cpan.org>, L<http://tinyurl.com/nn67z>.
 
 =head1 LICENSE
 
@@ -40,8 +40,10 @@ package WWW::Ebay;
 use strict;
 use warnings;
 
+require 5.005;
+
 our
-$VERSION = '0.091';
+$VERSION = '0.093';
 
 1;
 

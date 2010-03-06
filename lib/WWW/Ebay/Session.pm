@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Session.pm,v 1.57 2009-10-30 03:12:59 Martin Exp $ ' ;
+# $rcs = ' $Id: Session.pm,v 1.59 2010-03-06 13:33:22 Martin Exp $ ' ;
 
 =head1 COPYRIGHT
 
@@ -22,7 +22,7 @@ webpages from the eBay auction website (www.ebay.com).
 
 =head1 AUTHOR
 
-Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.html>.
+Martin 'Kingpin' Thurn, C<mthurn at cpan.org>, L<http://tinyurl.com/nn67z>.
 
 =head1 METHODS
 
@@ -61,6 +61,9 @@ use constant DEBUG_SOLD => 0;
 use constant DEBUG_UNSOLD => 0;
 use constant DEBUG_WATCH => 0;
 use constant DEBUG_READ_LOCAL_FILES => 0;
+
+our
+$VERSION = do { my @r = (q$Revision: 1.59 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 sub _debug
   {

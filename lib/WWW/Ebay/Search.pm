@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Search.pm,v 1.8 2008/03/02 18:16:27 Daddy Exp $ ' ;
+# $rcs = ' $Id: Search.pm,v 1.9 2010-03-06 13:33:22 Martin Exp $ ' ;
 
 package WWW::Ebay::Search;
 
@@ -17,5 +17,8 @@ __END__
 
 =head1 AUTHOR
 
-Martin Thurn, C<mthurn@cpan.org>, L<http://www.sandcrawler.com/SWB/cpan-modules.html>.
+Martin 'Kingpin' Thurn, C<mthurn at cpan.org>, L<http://tinyurl.com/nn67z>.
+
+=cut
+
 
