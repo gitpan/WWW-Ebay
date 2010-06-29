@@ -1,3 +1,9 @@
+2010-06-28  Kingpin  <Martin@BLUEMAX>
+
+	* lib/WWW/Search/Ebay/Completed.pm (_parse_enddate): fixed parser for auction end-date
+
+	* lib/WWW/Ebay/Session.pm (fetch_any_ebay_page): fixed parser for new sign-in page format
+
 2008-04-06    <Martin@BLUEMAX>
 
 	* removed the Mature search backend

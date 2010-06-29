@@ -1,9 +1,10 @@
 # -*- cperl -*-
 
-# $Id: completed.t,v 1.7 2009-10-30 03:13:12 Martin Exp $
+# $Id: completed.t,v 1.8 2010-06-29 03:04:56 Martin Exp $
 
 # use LWP::Debug qw( + -conns );
 
+use blib;
 use Bit::Vector;
 use Data::Dumper;
 use Date::Manip;

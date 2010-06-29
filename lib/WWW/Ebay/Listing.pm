@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Listing.pm,v 1.11 2010-03-06 13:33:21 Martin Exp $ ' ;
+# $rcs = ' $Id: Listing.pm,v 1.12 2010-05-08 12:51:44 Martin Exp $ ' ;
 
 =head1 COPYRIGHT
 
@@ -8,7 +8,7 @@
 
 =head1 NAME
 
-WWW/Ebay/Listing.pm
+WWW::Ebay::Listing - information about an auction listing
 
 =head1 SYNOPSIS
 
@@ -28,7 +28,7 @@ use strict;
 use warnings;
 
 our
-$VERSION = do { my @r = (q$Revision: 1.11 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.12 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 use Carp;
 use WWW::Ebay::Status;

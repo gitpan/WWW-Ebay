@@ -1,5 +1,5 @@
 
-# $Id: Completed.pm,v 1.32 2009-08-11 01:39:44 Martin Exp $
+# $Id: Completed.pm,v 1.33 2010-06-29 03:04:43 Martin Exp $
 
 =head1 NAME
 
@@ -54,7 +54,7 @@ use WWW::Ebay::Session;
 use base 'WWW::Search::Ebay';
 
 our
-$VERSION = do { my @r = (q$Revision: 1.32 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.33 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 our $MAINTAINER = 'Martin Thurn <mthurn@cpan.org>';
 
@@ -95,7 +95,8 @@ sub login
   my ($sUserID, $sPassword) = @_;
   if (ref $self->{__ebay__session__})
     {
-    DEBUG_FUNC && print STDERR " +   login() was already called.\n";
+    use Data::Dumper;
+    DEBUG_FUNC && print STDERR " +   login() was already called, I have these cookies:", Dumper($self->{__ebay__session__}->cookie_jar);
     return 1;
     } # if
   DEBUG_FUNC && print STDERR " + Ebay::Completed::login($sUserID)\n";
@@ -171,6 +172,7 @@ sub _parse_enddate
     }
   my $s = $oTDdate->as_text;
   print STDERR " DDD   TDdate ===$s===\n" if 1 < $self->{_debug};
+  $s =~ s/End\sDate://;
   # I don't know why there are sometimes weird characters in there:
   $s =~ s!&Acirc;!!g;
   $s =~ s!Â!!g;

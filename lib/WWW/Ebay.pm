@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Ebay.pm,v 1.31 2010-03-06 13:33:36 Martin Exp $ ' ;
+# $rcs = ' $Id: Ebay.pm,v 1.32 2010-06-29 03:03:56 Martin Exp $ ' ;
 
 =head1 NAME
 
@@ -43,7 +43,7 @@ use warnings;
 require 5.005;
 
 our
-$VERSION = '0.093';
+$VERSION = '0.094';
 
 1;
 

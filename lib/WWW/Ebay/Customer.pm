@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Customer.pm,v 1.15 2010-03-06 13:33:21 Martin Exp $ ' ;
+# $rcs = ' $Id: Customer.pm,v 1.16 2010-05-08 12:50:29 Martin Exp $ ' ;
 
 =head1 COPYRIGHT
 
@@ -8,7 +8,7 @@
 
 =head1 NAME
 
-WWW/Ebay/Customer.pm
+WWW::Ebay::Customer - information about an auction customer
 
 =head1 SYNOPSIS
 
@@ -40,7 +40,7 @@ use Carp;
 use Data::Dumper;  # for debugging only
 
 use vars qw( $AUTOLOAD $VERSION );
-$VERSION = do { my @r = (q$Revision: 1.15 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.16 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 use constant DEBUG_NEW => 0;
 

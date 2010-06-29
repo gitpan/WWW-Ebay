@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Session.pm,v 1.59 2010-03-06 13:33:22 Martin Exp $ ' ;
+# $rcs = ' $Id: Session.pm,v 1.62 2010-06-29 03:03:44 Martin Exp $ ' ;
 
 =head1 COPYRIGHT
 
@@ -8,7 +8,7 @@
 
 =head1 NAME
 
-WWW/Ebay/Session.pm
+WWW::Ebay::Session - log in to eBay and access account information
 
 =head1 SYNOPSIS
 
@@ -63,7 +63,7 @@ use constant DEBUG_WATCH => 0;
 use constant DEBUG_READ_LOCAL_FILES => 0;
 
 our
-$VERSION = do { my @r = (q$Revision: 1.59 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.62 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 sub _debug
   {
@@ -259,8 +259,8 @@ sub fetch_any_ebay_page
     print STDERR " + parsing ebay sign-in page...\n" if DEBUG_FETCH;
     # Parse the <FORM> elements:
     my @aoForm = HTML::Form->parse($sPage, $self->response->base);
-    # The sign-in form is the last one on the page:
-    my $oForm = $aoForm[-1];
+    # The sign-in form is the first one on the page:
+    my $oForm = $aoForm[0];
     unless (ref $oForm)
       {
       print STDERR " --- eBay sign-in page's <FORM> was not valid?\n" if DEBUG_FETCH;
