@@ -1,5 +1,5 @@
 
-# $Id: Completed.pm,v 1.34 2013/08/21 01:27:12 Martin Exp $
+# $Id: Completed.pm,v 1.36 2014-09-09 03:07:47 Martin Exp $
 
 =head1 NAME
 
@@ -54,7 +54,7 @@ use WWW::Ebay::Session;
 use base 'WWW::Search::Ebay';
 
 our
-$VERSION = do { my @r = (q$Revision: 1.34 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.36 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 our $MAINTAINER = 'Martin Thurn <mthurn@cpan.org>';
 
@@ -69,14 +69,13 @@ sub _native_setup_search
     carp " --- second argument to _native_setup_search should be hashref, not arrayref";
     return undef;
     } # unless
-  # As of Summer 2008:
-  # http://completed.shop.ebay.com/items/_W0QQLHQ5fCompleteZ1?_nkw=keychain+ahsoka&_sacat=0&_fromfsb=&_trksid=m270.l1313&_odkw=lego+ahsoka&_osacat=0
-  $self->{'search_host'} ||= 'http://completed.shop.ebay.com';
-  $self->{search_path} ||= q{/items/_W0QQLHQ5fCompleteZ1};
-  $self->{_options} ||= {
-                         _nkw => $native_query,
-                         _ipg => 200,
-                        };
+  # As of August 2014:
+  # http://www.ebay.com/sch/i.html?_from=R40&_sacat=0&_nkw=playboy+october+1977&LH_Complete=1&rt=nc
+  $self->{search_host} ||= 'http://www.ebay.com';
+  $self->{search_path} ||= q{/sch/i.html};
+  $self->{_options}->{_nkw} = $native_query if ($native_query ne q{});
+  $self->{_options}->{LH_Complete} = 1;
+  $self->{_options}->{_ipg} = 200;
   return $self->SUPER::_native_setup_search($native_query, $rhOptsArg);
   } # _native_setup_search
 
@@ -146,20 +145,12 @@ sub _preprocess_results_page
   exit 88;
   } # preprocess_results_page
 
-sub _columns_USE_SUPER
+sub _columns
   {
   my $self = shift;
   # This is for basic USA eBay:
-  return qw( paypal bids price enddate );
+  return qw( price bids enddate );
   } # _columns
-
-
-=head2 _parse_enddate
-
-Defines how to parse the auction ending date from the HTML.
-(See WWW::Search::Ebay for more information.)
-
-=cut
 
 sub _parse_enddate
   {

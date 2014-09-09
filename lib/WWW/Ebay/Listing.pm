@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Listing.pm,v 1.12 2010/05/08 12:51:44 Martin Exp $ ' ;
+# $rcs = ' $Id: Listing.pm,v 1.12 2010-05-08 12:51:44 Martin Exp $ ' ;
 
 =head1 COPYRIGHT
 

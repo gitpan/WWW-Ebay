@@ -1,17 +1,22 @@
 
-# $Id: completed_category.t,v 1.2 2013/08/21 01:28:09 Martin Exp $
+# $Id: completed_category.t,v 1.3 2014-09-09 03:08:40 Martin Exp $
 
-use blib;
+use strict;
+use warnings;
+
+use constant DEBUG_CONTENT => 0;
+
 use Bit::Vector;
 use Data::Dumper;
 use Date::Manip;
-use Test::More no_plan;
-
+use Test::More 'no_plan';
 use WWW::Search::Test;
+
 BEGIN
   {
+  use ExtUtils::testlib;
   use_ok('WWW::Search::Ebay::Completed::Category');
-  }
+  } # end of BEGIN block
 
 my $iDebug = 0;
 my $iDump = 0;
@@ -50,6 +55,7 @@ PROMPT
                                                    ($sPassword eq ''));
   diag("log in as $sUserID...");
   ok($WWW::Search::Test::oSearch->login($sUserID, $sPassword), 'logged in');
+  DEBUG_CONTENT && goto TEST_CONTENT;
   # goto DEBUG_NOW;
 
   # This test returns no results (but we should not get an HTTP error):
@@ -69,28 +75,31 @@ PROMPT
 
  DEBUG_NOW:
   pass;
+ TEST_CONTENT:
   diag("sending one-page query...");
-  $iDebug = 0;
+  $iDebug = DEBUG_CONTENT ? 2 : 0;
   $iDump = 0;
   $WWW::Search::Test::sSaveOnError = q{completed_category-failed.html};
-  tm_run_test('normal', '35845', 1, 199, $iDebug, $iDump);
+  tm_run_test('normal', '1392', 1, 199, $iDebug, $iDump);
   # Now get the results and inspect them:
   my @ao = $WWW::Search::Test::oSearch->results();
   cmp_ok(0, '<', scalar(@ao), 'got some results');
   my @ara = (
              ['url', 'like', qr{\Ahttp://(cgi|www)\d*\.ebay\.com}i, 'URL is really from ebay.com'],
              ['title', 'ne', 'q{}', 'Title is not empty'],
-             ['end_date', 'date', 'end_date is really a date'],
+             # ['end_date', 'date', 'end_date is really a date'],
              ['description', 'like', qr{Item #\d+;}, 'description contains item #'],
-             ['description', 'like', qr{\d+\.\d+(\Z|\s\()}, 'description contains result amount'],
+             ['description', 'like', qr{\d+\.\d+(\Z|\s\(?)}, 'description contains result amount'],
              ['description', 'like', qr{\b(\d+|no)\s+bids?|Buy-It-Now}, # }, # Emacs bug
               'result bidcount is ok'],
              ['bid_count', 'like', qr{\A\d+\z}, 'bid_count is a number'],
             );
   WWW::Search::Test::test_most_results(\@ara, 0.95);
+  DEBUG_CONTENT && goto ALL_DONE;
   } # SKIP
 
-exit 0;
+ALL_DONE:
+pass;
 
 __END__
 

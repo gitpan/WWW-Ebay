@@ -3,24 +3,23 @@
 use strict;
 use warnings;
 
-# $Id: completed.t,v 1.9 2013/08/21 01:13:39 Martin Exp $
+# $Id: completed.t,v 1.10 2014-09-09 03:08:32 Martin Exp $
 
 # use LWP::Debug qw( + -conns );
 
-use blib;
+use constant DEBUG_CONTENT => 0;
+
 use Bit::Vector;
 use Data::Dumper;
 use Date::Manip;
-use ExtUtils::testlib;
 use Test::More 'no_plan';
-
-use constant DEBUG_ONE => 0;
-
 use WWW::Search::Test;
+
 BEGIN
   {
+  use ExtUtils::testlib;
   use_ok('WWW::Search::Ebay::Completed');
-  }
+  } # end of BEGIN block
 
 my $iDebug = 0;
 my $iDump = 0;
@@ -60,7 +59,7 @@ PROMPT
                                                    ($sPassword eq ''));
   diag("log in as $sUserID...");
   ok($WWW::Search::Test::oSearch->login($sUserID, $sPassword), 'logged in');
-  DEBUG_ONE && goto TEST_ONE;
+  DEBUG_CONTENT && goto TEST_CONTENT;
 
   # This test returns no results (but we should not get an HTTP error):
   diag("sending zero-page query...");
@@ -71,29 +70,30 @@ PROMPT
   $iDump = 0;
   tm_run_test('normal', 'lego', 101, undef, $iDebug, $iDump);
 
- TEST_ONE:
+ TEST_CONTENT:
   diag("sending one-page query...");
-  $iDebug = 0;
+  $iDebug = DEBUG_CONTENT ? 2 : 0;
   $iDump = 0;
   $WWW::Search::Test::sSaveOnError = q{completed-failed.html};
   my $sQuery = q{ahsoka keychain};
   $sQuery = q{playboy october 1977};
+  # $sQuery = q{simon says spin this};
   tm_run_test('normal', $sQuery, 1, 99, $iDebug, $iDump);
   # Now get the results and inspect them:
   my @ao = $WWW::Search::Test::oSearch->results();
   cmp_ok(0, '<', scalar(@ao), 'got some results');
   my @ara = (
-             ['url', 'like', qr{\Ahttp://(cgi|www)\d*\.ebay\.com}i, 'URL is really from ebay.com'],
-             ['title', 'ne', 'q{}', 'Title is not empty'],
+             ['url', 'like', qr{\Ahttp://(cgi|www)\d*\.ebay\.com}i, 'url is from ebay.com'],
+             ['title', 'ne', 'q{}', 'title is not empty'],
              ['end_date', 'date', 'end_date is really a date'],
              ['description', 'like', qr{Item #\d+;}, 'description contains item #'],
-             ['description', 'like', qr{\d+\.\d+(\Z|\s\()}, 'description contains result amount'],
-             ['description', 'like', qr{\b(\d+|no)\s+bids?|Buy-It-Now}, # }, # Emacs bug
-              'result bidcount is ok'],
+             ['description', 'like', qr{\d+\.\d+\b}, 'description contains result amount'],
+             ['description', 'like', qr{\b((\d+|no)\s+bids?|Buy-It-Now)}, # }, # Emacs bug
+              'description contains bidcount'],
              ['bid_count', 'like', qr{\A\d+\z}, 'bid_count is a number'],
             );
   WWW::Search::Test::test_most_results(\@ara, 0.95);
-  DEBUG_ONE && goto ALL_DONE;
+  DEBUG_CONTENT && goto ALL_DONE;
 
   diag("sending one-page query against a particular category...");
   # An additional test for the following problems reported by users:

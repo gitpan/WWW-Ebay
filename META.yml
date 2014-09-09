@@ -14,7 +14,7 @@ configure_requires:
   ExtUtils::MakeMaker: 6.36
 distribution_type: module
 dynamic_config: 1
-generated_by: 'Module::Install version 1.06'
+generated_by: 'Module::Install version 1.12'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -46,7 +46,7 @@ requires:
   WWW::Search: 2.525
   WWW::Search::Ebay: 2.262
   WWW::SearchResult: 2.07
-  perl: 5.005
+  perl: '5.005'
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.096
+version: '1.003'

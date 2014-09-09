@@ -1,13 +1,19 @@
 
-# $Id: session.t,v 1.11 2008/03/02 18:17:57 Daddy Exp $
-
-use ExtUtils::testlib;
-
-use Test::More no_plan;
-
-BEGIN { use_ok('WWW::Ebay::Session') };
+# $Id: session.t,v 1.12 2014-09-09 03:09:10 Martin Exp $
 
 use strict;
+use warnings;
+
+use Test::More 'no_plan';
+
+my $sPkg;
+
+BEGIN
+  {
+  use ExtUtils::testlib;
+  $sPkg = 'WWW::Ebay::Session';
+  use_ok($sPkg);
+  } # end of BEGIN block
 
 SKIP:
   {
@@ -20,11 +26,14 @@ SKIP:
     } # if
   skip "eBay userid/password not supplied", 11 if (($sUserID   eq '') ||
                                                    ($sPassword eq ''));
+  my $oSession = new $sPkg($sUserID, $sPassword);
+  isa_ok($oSession, $sPkg);
   diag("Trying to sign in as $sUserID, with password from env.var EBAY_PASSWORD...");
-  my $oSession = new WWW::Ebay::Session($sUserID, $sPassword);
-  isa_ok($oSession, 'WWW::Ebay::Session');
   my $s = $oSession->signin;
-  isnt($s, 'FAILED', 'signed-in');
+  if (! isnt($s, 'FAILED', 'signed-in'))
+    {
+    skip q{Can not sign in; no point trying any more tests}, 9;
+    } # if
 
   diag("Fetching $sUserID\'s current auctions...");
   my @aoListings = $oSession->selling_auctions(); # 'Pages/selling.html');

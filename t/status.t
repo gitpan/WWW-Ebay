@@ -1,5 +1,5 @@
 
-# $Id: status.t,v 1.7 2008/04/05 17:54:53 Martin Exp $
+# $Id: status.t,v 1.7 2008-04-05 17:54:53 Martin Exp $
 
 use ExtUtils::testlib;
 

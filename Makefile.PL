@@ -1,5 +1,5 @@
 
-# $Id: Makefile.PL,v 1.39 2013/08/21 01:27:50 Martin Exp $
+# $Id: Makefile.PL,v 1.41 2014-09-09 03:06:48 Martin Exp $
 
 use inc::Module::Install;
 use strict;
@@ -42,7 +42,14 @@ test_requires('WWW::Search::Test' => 2.265);
 # We need the bug-fixed version of WWW::Search::Test with test_most():
 test_requires('WWW::Search::Test' => 2.290);
 
-WriteAll();
+use Env;
+if ($ENV{MTHURN_PERL_DEV})
+  {
+  warn "DDD before WriteAll, this is author's development environment\n";
+  use_ptar();
+  } # if
+
+WriteAll;
 
 my @asNeeded;
 foreach my $s (qw( EBAY_USERID EBAY_PASSWORD ))
@@ -69,9 +76,9 @@ PART0
   } # MY::postamble
 
 use Env;
-if ($ENV{MTHURN_PERL_DEV})
+if (0 && $ENV{MTHURN_PERL_DEV})
   {
-  print "DDD This is author's development environment\n";
+  print "DDD after WriteAll, this is author's development environment\n";
   my $sFnameMakefile = q{Makefile};
   eval "use File::Slurp";
   my $s = read_file($sFnameMakefile);

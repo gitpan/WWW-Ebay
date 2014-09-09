@@ -1,4 +1,4 @@
-# $Id: pod-coverage.t,v 1.1 2008/03/02 18:18:02 Daddy Exp $
+# $Id: pod-coverage.t,v 1.1 2008-03-02 18:18:02 Daddy Exp $
 use Test::More;
 my
 $VERSION = do { my @r = (q$Revision: 1.1 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };

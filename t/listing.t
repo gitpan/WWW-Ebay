@@ -1,5 +1,5 @@
 
-# $Id: listing.t,v 1.6 2006/02/18 19:25:54 Daddy Exp $
+# $Id: listing.t,v 1.6 2006-02-18 19:25:54 Daddy Exp $
 
 use ExtUtils::testlib;
 

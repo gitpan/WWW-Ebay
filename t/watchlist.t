@@ -1,5 +1,5 @@
 
-# $Id: watchlist.t,v 1.3 2006/03/22 01:14:04 Daddy Exp $
+# $Id: watchlist.t,v 1.3 2006-03-22 01:14:04 Daddy Exp $
 
 use ExtUtils::testlib;
 

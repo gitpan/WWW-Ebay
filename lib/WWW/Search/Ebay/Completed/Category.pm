@@ -1,5 +1,5 @@
 
-# $Id: Category.pm,v 1.2 2009/01/22 03:40:57 Martin Exp $
+# $Id: Category.pm,v 1.3 2014-09-09 03:07:56 Martin Exp $
 
 =head1 NAME
 
@@ -48,7 +48,7 @@ use Carp;
 use base 'WWW::Search::Ebay::Completed';
 
 our
-$VERSION = do { my @r = (q$Revision: 1.2 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.3 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 my $MAINTAINER = 'Martin Thurn <mthurn@cpan.org>';
 
@@ -63,15 +63,11 @@ sub _native_setup_search
     carp " --- second argument to _native_setup_search should be hashref, not arrayref";
     return undef;
     } # unless
-  # As of Jan. 2009:
-  # http://completed.shop.ebay.com/items/__W0QQLHQ5fCompleteZ1?_ipg=200&_sacat=1381
-  $self->{'search_host'} = 'http://completed.shop.ebay.com';
-  $self->{search_path} = q{/items/__W0QQLHQ5fCompleteZ1};
-  $self->{_options} = {
-                       _ipg => 200,
-                       _sacat => $native_query,
-                      };
-  return $self->SUPER::_native_setup_search($native_query, $rhOptsArg);
+  # As of August 2014:
+  # http://www.ebay.com/sch/Magazine-Back-Issues-/280/i.html?_from=R40%7CR40&LH_Complete=1&_udlo=&_udhi=&_ftrt=901&_ftrv=1&_sabdlo=&_sabdhi=&_samilow=&_samihi=&_sadis=10&_fpos=&_fsct=&LH_SALE_CURRENCY=0&_sop=13&_dmd=1&_ipg=50&_nkw=playboy+october+1977
+  $self->{search_host} = 'http://www.ebay.com';
+  $self->{search_path} = sprintf(q{/sch/Foo-/%i/i.html}, $native_query);
+  return $self->SUPER::_native_setup_search(q{}, $rhOptsArg);
   } # _native_setup_search
 
 

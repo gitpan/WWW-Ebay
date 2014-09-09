@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Session.pm,v 1.63 2013/08/21 01:52:48 Martin Exp $ ' ;
+# $rcs = ' $Id: Session.pm,v 1.64 2014-09-09 03:07:22 Martin Exp $ ' ;
 
 =head1 COPYRIGHT
 
@@ -63,7 +63,7 @@ use constant DEBUG_WATCH => 0;
 use constant DEBUG_READ_LOCAL_FILES => 0;
 
 our
-$VERSION = do { my @r = (q$Revision: 1.63 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.64 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 sub _debug
   {
@@ -259,8 +259,8 @@ sub fetch_any_ebay_page
     print STDERR " DDD parsing ebay sign-in page...\n" if DEBUG_FETCH;
     # Parse the <FORM> elements:
     my @aoForm = HTML::Form->parse($sPage, $self->response->base);
-    # As of August 2013, the sign-in form is the second one on the page:
-    my $oForm = $aoForm[1];
+    # As of August 2014, the sign-in form is the first one on the page:
+    my $oForm = $aoForm[0];
     unless (ref $oForm)
       {
       print STDERR " EEE eBay sign-in page contained no <FORM> element!\n" if DEBUG_FETCH;

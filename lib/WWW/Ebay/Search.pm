@@ -1,5 +1,5 @@
 
-# $rcs = ' $Id: Search.pm,v 1.9 2010/03/06 13:33:22 Martin Exp $ ' ;
+# $rcs = ' $Id: Search.pm,v 1.9 2010-03-06 13:33:22 Martin Exp $ ' ;
 
 package WWW::Ebay::Search;
 
